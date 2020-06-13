@@ -26,13 +26,13 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+    TicTacToeGame.cpp
 
 HEADERS += \
-        mainwindow.h
+    TicTacToeGame.h
 
 FORMS += \
-        mainwindow.ui
+        TicTacToeGame.ui
 
 RC_ICONS = images/icon.ico
 

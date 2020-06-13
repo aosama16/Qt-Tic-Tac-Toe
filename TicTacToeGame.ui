@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>TicTacToeGame</class>
+ <widget class="QMainWindow" name="TicTacToeGame">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -44,7 +44,7 @@
          <number>0</number>
         </property>
         <item row="0" column="5">
-         <widget class="QPushButton" name="pushButton_3">
+         <widget class="QPushButton" name="cell_3">
           <property name="enabled">
            <bool>true</bool>
           </property>
@@ -55,6 +55,12 @@
            </sizepolicy>
           </property>
           <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>100</height>
+           </size>
+          </property>
+          <property name="maximumSize">
            <size>
             <width>100</width>
             <height>100</height>
@@ -77,7 +83,7 @@
          </widget>
         </item>
         <item row="2" column="5">
-         <widget class="QPushButton" name="pushButton_6">
+         <widget class="QPushButton" name="cell_6">
           <property name="enabled">
            <bool>true</bool>
           </property>
@@ -88,6 +94,12 @@
            </sizepolicy>
           </property>
           <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>100</height>
+           </size>
+          </property>
+          <property name="maximumSize">
            <size>
             <width>100</width>
             <height>100</height>
@@ -110,7 +122,7 @@
          </widget>
         </item>
         <item row="0" column="3">
-         <widget class="QPushButton" name="pushButton_2">
+         <widget class="QPushButton" name="cell_2">
           <property name="enabled">
            <bool>true</bool>
           </property>
@@ -121,6 +133,12 @@
            </sizepolicy>
           </property>
           <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>100</height>
+           </size>
+          </property>
+          <property name="maximumSize">
            <size>
             <width>100</width>
             <height>100</height>
@@ -143,7 +161,7 @@
          </widget>
         </item>
         <item row="2" column="3">
-         <widget class="QPushButton" name="pushButton_5">
+         <widget class="QPushButton" name="cell_5">
           <property name="enabled">
            <bool>true</bool>
           </property>
@@ -154,6 +172,12 @@
            </sizepolicy>
           </property>
           <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>100</height>
+           </size>
+          </property>
+          <property name="maximumSize">
            <size>
             <width>100</width>
             <height>100</height>
@@ -190,7 +214,7 @@
          </widget>
         </item>
         <item row="5" column="5">
-         <widget class="QPushButton" name="pushButton_9">
+         <widget class="QPushButton" name="cell_9">
           <property name="enabled">
            <bool>true</bool>
           </property>
@@ -201,6 +225,12 @@
            </sizepolicy>
           </property>
           <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>100</height>
+           </size>
+          </property>
+          <property name="maximumSize">
            <size>
             <width>100</width>
             <height>100</height>
@@ -230,7 +260,7 @@
          </widget>
         </item>
         <item row="2" column="1">
-         <widget class="QPushButton" name="pushButton_4">
+         <widget class="QPushButton" name="cell_4">
           <property name="enabled">
            <bool>true</bool>
           </property>
@@ -241,6 +271,12 @@
            </sizepolicy>
           </property>
           <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>100</height>
+           </size>
+          </property>
+          <property name="maximumSize">
            <size>
             <width>100</width>
             <height>100</height>
@@ -277,7 +313,7 @@
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="QPushButton" name="pushButton_1">
+         <widget class="QPushButton" name="cell_1">
           <property name="enabled">
            <bool>true</bool>
           </property>
@@ -288,6 +324,12 @@
            </sizepolicy>
           </property>
           <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>100</height>
+           </size>
+          </property>
+          <property name="maximumSize">
            <size>
             <width>100</width>
             <height>100</height>
@@ -310,7 +352,7 @@
          </widget>
         </item>
         <item row="5" column="1">
-         <widget class="QPushButton" name="pushButton_7">
+         <widget class="QPushButton" name="cell_7">
           <property name="enabled">
            <bool>true</bool>
           </property>
@@ -321,6 +363,12 @@
            </sizepolicy>
           </property>
           <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>100</height>
+           </size>
+          </property>
+          <property name="maximumSize">
            <size>
             <width>100</width>
             <height>100</height>
@@ -364,7 +412,7 @@
          </widget>
         </item>
         <item row="5" column="3">
-         <widget class="QPushButton" name="pushButton_8">
+         <widget class="QPushButton" name="cell_8">
           <property name="enabled">
            <bool>true</bool>
           </property>
@@ -375,6 +423,12 @@
            </sizepolicy>
           </property>
           <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>100</height>
+           </size>
+          </property>
+          <property name="maximumSize">
            <size>
             <width>100</width>
             <height>100</height>
@@ -401,14 +455,14 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <widget class="QPushButton" name="pushButton_10">
+         <widget class="QPushButton" name="back">
           <property name="text">
            <string>Back to title screen</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="reset">
           <property name="text">
            <string>New Game</string>
           </property>
