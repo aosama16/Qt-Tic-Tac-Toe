@@ -14,6 +14,8 @@ private:
     BoardMarks board[BOARD_SIZE][BOARD_SIZE];
 public:
     Board();
+    void printBoard();
+    bool setPlayerInput(int row, int col, BoardMarks currentPlayer);
 };
 
 #endif // BOARD_H

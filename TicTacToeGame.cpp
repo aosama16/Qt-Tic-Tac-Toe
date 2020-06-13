@@ -57,9 +57,11 @@ QString TicTacToeGame::getCurrentPlayerColor()
 
 void TicTacToeGame::cellClicked(QPushButton* cell, int row, int col)
 {
-    Q_UNUSED(row);
-    Q_UNUSED(col);
-    cell->setStyleSheet(QString("color: %1;").arg(getCurrentPlayerColor()));
-    cell->setText(getCurrentPlayerText());
-    switchPlayer();
+    bool success = board.setPlayerInput(row, col, this->currentPlayer);
+    if(success){
+        cell->setStyleSheet(QString("color: %1;").arg(getCurrentPlayerColor()));
+        cell->setText(getCurrentPlayerText());
+        board.printBoard();
+        switchPlayer();
+    }
 }
