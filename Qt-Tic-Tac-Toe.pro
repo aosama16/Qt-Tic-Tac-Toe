@@ -26,10 +26,12 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-    TicTacToeGame.cpp
+    TicTacToeGame.cpp \
+    board.cpp
 
 HEADERS += \
-    TicTacToeGame.h
+    TicTacToeGame.h \
+    board.h
 
 FORMS += \
         TicTacToeGame.ui

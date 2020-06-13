@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "board.h"
 
 namespace Ui {
 class TicTacToeGame;
@@ -15,8 +16,10 @@ public:
     explicit TicTacToeGame(QWidget *parent = nullptr);
     ~TicTacToeGame();
 
-private:
+private: // Data
     Ui::TicTacToeGame *ui;
+    BoardMarks currentPlayer = BoardMarks::X;
+    Board board;
 };
 
 #endif // MAINWINDOW_H
