@@ -27,6 +27,9 @@ void TicTacToeGame::setConnections()
     connect(ui->cell_7, &QPushButton::clicked, [=] { cellClicked(ui->cell_7, 2, 0); });
     connect(ui->cell_8, &QPushButton::clicked, [=] { cellClicked(ui->cell_8, 2, 1); });
     connect(ui->cell_9, &QPushButton::clicked, [=] { cellClicked(ui->cell_9, 2, 2); });
+
+    // New Game Connection - resetting the game
+    connect(ui->reset, SIGNAL(clicked()), SLOT(reset()));
 }
 
 void TicTacToeGame::switchPlayer()
@@ -64,4 +67,21 @@ void TicTacToeGame::cellClicked(QPushButton* cell, int row, int col)
         board.printBoard();
         switchPlayer();
     }
+}
+
+void TicTacToeGame::reset()
+{
+    // Resets the internal Representation of the board.
+    board.reset();
+
+    // Resets the GUI cells to an empty button with no text marks.
+    ui->cell_1->setText("");
+    ui->cell_2->setText("");
+    ui->cell_3->setText("");
+    ui->cell_4->setText("");
+    ui->cell_5->setText("");
+    ui->cell_6->setText("");
+    ui->cell_7->setText("");
+    ui->cell_8->setText("");
+    ui->cell_9->setText("");
 }

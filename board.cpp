@@ -4,6 +4,7 @@
 
 Board::Board()
 {
+    // Sets all the cells to empty.
 	for(int row = 0; row < BOARD_SIZE; ++row){
         for (int col = 0; col < BOARD_SIZE; ++col){
             board[row][col] = BoardMarks::Empty;
@@ -37,4 +38,14 @@ bool Board::setPlayerInput(int row, int col, BoardMarks currentPlayer)
     this->board[row][col] = currentPlayer;
 
     return true;
+}
+
+void Board::reset()
+{
+    // Sets all the cells to empty.
+    for(int row = 0; row < BOARD_SIZE; ++row){
+        for (int col = 0; col < BOARD_SIZE; ++col){
+            board[row][col] = BoardMarks::Empty;
+        }
+    }
 }

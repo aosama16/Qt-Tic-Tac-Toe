@@ -30,7 +30,7 @@ private: // Methods
 
 public slots:
     void cellClicked(QPushButton *cell, int row, int col);
-
+    void reset();
 };
 
 #endif // MAINWINDOW_H

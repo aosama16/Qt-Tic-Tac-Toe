@@ -16,6 +16,7 @@ public:
     Board();
     void printBoard();
     bool setPlayerInput(int row, int col, BoardMarks currentPlayer);
+    void reset();
 };
 
 #endif // BOARD_H
