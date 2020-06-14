@@ -5,10 +5,11 @@
 
 
 
-TicTacToeGame::TicTacToeGame(QWidget *parent, int boardSize) :
+TicTacToeGame::TicTacToeGame(QWidget *parent, int boardSize, int miniMaxDepth) :
     QMainWindow(parent),
     ui(new Ui::TicTacToeGame),
-    board(boardSize)
+    board(boardSize),
+    miniMaxDepth(miniMaxDepth)
 {
     ui->setupUi(this);
 
@@ -105,7 +106,7 @@ QString TicTacToeGame::getBoardFinalStateText(BoardState boardState)
 
 void TicTacToeGame::playAIturn()
 {
-    int cellIdx = board.miniMax(this->currentPlayer);
+    int cellIdx = board.miniMax(this->currentPlayer, this->miniMaxDepth);
     if(cellIdx != -1)
         updateGameState(cells.at(cellIdx));
 }

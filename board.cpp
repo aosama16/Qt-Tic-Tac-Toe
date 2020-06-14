@@ -6,9 +6,9 @@
 #endif
 
 
-Board::Board(int boardSize):
-    boardSize(boardSize),
-    board(boardSize, vector<BoardMarks>(boardSize, BoardMarks::Empty))
+Board::Board(int size):
+    board(size, vector<BoardMarks>(size, BoardMarks::Empty)),
+    boardSize(size)
 {
     // Initialize unknown player and AI marks with Empty
     AImark = BoardMarks::Empty;
@@ -155,7 +155,7 @@ int Board::score(BoardState state)
         return 0;
 }
 
-int Board::miniMax(BoardMarks currentPlayer)
+int Board::miniMax(BoardMarks currentPlayer, int depth)
 {
     if(evaluateBoard() != BoardState::NoWinner)
         return -1;
@@ -173,7 +173,7 @@ int Board::miniMax(BoardMarks currentPlayer)
                 // Try the move
                 board[row][col] = AImark;
 
-                int moveScore = minMove();
+                int moveScore = minMove(depth-1, INT_MIN, INT_MAX);
                 if(moveScore > bestScore){
                     bestScore = moveScore;
                     bestEntry.first = row;;
@@ -190,11 +190,11 @@ int Board::miniMax(BoardMarks currentPlayer)
     return bestEntry.first * this->boardSize + bestEntry.second;
 }
 
-int Board::maxMove()
+int Board::maxMove(int depth, int alpha, int beta)
 {
     // if game over return score
     BoardState state = evaluateBoard();
-    if(state != BoardState::NoWinner)
+    if(depth == 0 || state != BoardState::NoWinner)
         return score(state);
 
     int bestScore = INT_MIN;
@@ -205,21 +205,26 @@ int Board::maxMove()
                 board[row][col] = this->AImark;
 
                 // Compare result of this move with respect to AI
-                bestScore = std::max(bestScore, minMove());
+                int score = minMove(depth-1, alpha, beta);
 
                 // Reset the move done
                 board[row][col] = BoardMarks::Empty;
+
+                bestScore = std::max(bestScore, score);
+                alpha = std::max(alpha, score);
+                if(beta <= alpha)
+                    break;
             }
         }
     }
     return bestScore;
 }
 
-int Board::minMove()
+int Board::minMove(int depth, int alpha, int beta)
 {
     // if game over return score
     BoardState state = evaluateBoard();
-    if(state != BoardState::NoWinner)
+    if(depth == 0 || state != BoardState::NoWinner)
         return score(state);
 
     int bestScore = INT_MAX;
@@ -230,10 +235,16 @@ int Board::minMove()
                 board[row][col] = playerMark;
 
                 // Compare result of this move with respect to player
-                bestScore = std::min(bestScore, maxMove());
+                int score = maxMove(depth-1, alpha, beta);
 
                 // Reset the move done
                 board[row][col] = BoardMarks::Empty;
+
+                bestScore = std::min(bestScore, score);
+                beta = std::min(beta, score);
+                if(beta <= alpha)
+                    break;
+
             }
         }
     }

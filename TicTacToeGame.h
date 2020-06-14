@@ -15,7 +15,7 @@ class TicTacToeGame : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit TicTacToeGame(QWidget *parent = nullptr, int boardSize = 3);
+    explicit TicTacToeGame(QWidget *parent = nullptr, int boardSize = 3, int miniMaxDepth = 3);
     ~TicTacToeGame();
 
 private: // Types
@@ -36,6 +36,7 @@ private: // Data
     BoardMarks currentPlayer;
     Board board;
     std::vector<Cell> cells;
+    int miniMaxDepth;
     bool AIopponent;
     bool startWithAI;
 

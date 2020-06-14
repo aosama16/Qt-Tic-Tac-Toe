@@ -28,15 +28,15 @@ private: // Data
     BoardMarks playerMark;
 
 private: // Methods
-    int maxMove();
-    int minMove();
+    int maxMove(int depth, int alpha, int beta);
+    int minMove(int depth, int alpha, int beta);
     int score(BoardState state);
 
 public:
-    Board(int boardSize);
+    Board(int size);
     BoardState evaluateBoard();
     bool setPlayerInput(int row, int col, BoardMarks currentPlayer);
-    int miniMax(BoardMarks currentPlayer);
+    int miniMax(BoardMarks currentPlayer, int depth);
     BoardState updateState();
     void reset();
 #ifdef QT_DEBUG
