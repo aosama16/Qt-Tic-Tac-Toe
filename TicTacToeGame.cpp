@@ -9,6 +9,8 @@ TicTacToeGame::TicTacToeGame(QWidget *parent) :
     ui->setupUi(this);
 
     currentPlayer = BoardMarks::X;
+    AIopponent = false;
+    startWithAI = true;
 
     // Reference to cells
     cells.reserve(9);
@@ -23,6 +25,9 @@ TicTacToeGame::TicTacToeGame(QWidget *parent) :
     cells.emplace_back(ui->cell_9, 2, 2);
 
     setConnections();
+
+    // Setup a new game
+    reset();
 }
 
 TicTacToeGame::~TicTacToeGame()
@@ -38,6 +43,10 @@ void TicTacToeGame::setConnections()
 
     // New Game Connection - resetting the game
     connect(ui->reset, SIGNAL(clicked()), SLOT(reset()));
+
+    // Connect AI to play after a cell is chosen by human input
+    if(this->AIopponent)
+        connect(this, SIGNAL(turnFinished()), this, SLOT(playAIturn()));
 }
 
 void TicTacToeGame::switchPlayer()
@@ -76,30 +85,45 @@ QString TicTacToeGame::getBoardFinalStateText(BoardState boardState)
     }
 }
 
+void TicTacToeGame::playAIturn()
+{
+    int cellIdx = board.getAIcellIdxInput(this->currentPlayer);
+    if(cellIdx != -1)
+        updateGameState(cells.at(cellIdx));
+}
+
 void TicTacToeGame::declareGameState(BoardState boardState)
 {
     QMessageBox resultBox;
     resultBox.setWindowTitle("Game Result");
-    resultBox.setMinimumWidth(500);
     resultBox.setText("Game over, " + getBoardFinalStateText(boardState));
     resultBox.exec();
+}
+
+void TicTacToeGame::updateGameState(Cell& cell)
+{
+    // Update Cell button in GUI
+    cell.cellBtn->setStyleSheet(QString("color: %1;").arg(getCurrentPlayerColor()));
+    cell.cellBtn->setText(getCurrentPlayerText());
+
+#ifdef QT_DEBUG
+    board.printBoard();
+#endif
+    // Update board state and declare state if its a final state
+    BoardState boardState = board.updateState(this->currentPlayer);
+    if(boardState != BoardState::NoWinner)
+        declareGameState(boardState);
+
+    // Switch the players
+    switchPlayer();
 }
 
 void TicTacToeGame::cellClicked(Cell& cell)
 {
     bool success = board.setPlayerInput(cell.row, cell.col, this->currentPlayer);
     if(success){
-        cell.cellBtn->setStyleSheet(QString("color: %1;").arg(getCurrentPlayerColor()));
-        cell.cellBtn->setText(getCurrentPlayerText());
-
-#ifdef QT_DEBUG
-        board.printBoard();
-#endif
-        BoardState boardState = board.updateState(this->currentPlayer);
-        if(boardState != BoardState::NoWinner)
-            declareGameState(boardState);
-
-        switchPlayer();
+        updateGameState(cell);
+        emit turnFinished();
     }
 }
 
@@ -114,4 +138,7 @@ void TicTacToeGame::reset()
     // Resets the GUI cells to an empty button with no text marks.
     for(auto& cell : cells)
         cell.cellBtn->setText("");
+
+    if(this->AIopponent && this->startWithAI)
+        playAIturn();
 }

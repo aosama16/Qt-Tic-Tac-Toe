@@ -32,6 +32,7 @@ public:
     void printBoard();
 #endif
     bool setPlayerInput(int row, int col, BoardMarks currentPlayer);
+    int getAIcellIdxInput(BoardMarks currentPlayer);
     BoardState updateState(BoardMarks currentPlayer);
     void reset();
 };

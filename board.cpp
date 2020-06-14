@@ -99,6 +99,23 @@ bool Board::setPlayerInput(int row, int col, BoardMarks currentPlayer)
     return true;
 }
 
+int Board::getAIcellIdxInput(BoardMarks currentPlayer)
+{
+    if(state != BoardState::NoWinner)
+        return -1;
+
+    for(int row = 0; row < BOARD_SIZE; ++row){
+        for (int col = 0; col < BOARD_SIZE; ++col){
+            if(board[row][col] == BoardMarks::Empty){
+                board[row][col] = currentPlayer;
+                ++this->inputCount;
+                return row * this->BOARD_SIZE + col;
+            }
+        }
+    }
+    return -1;
+}
+
 BoardState Board::updateState(BoardMarks currentPlayer)
 {
     // Updates the state with the new state and returns it to the game.

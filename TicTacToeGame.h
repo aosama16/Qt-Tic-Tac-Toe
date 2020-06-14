@@ -36,6 +36,8 @@ private: // Data
     BoardMarks currentPlayer;
     Board board;
     std::vector<Cell> cells;
+    bool AIopponent;
+    bool startWithAI;
 
 private: // Methods
     void setConnections();
@@ -44,9 +46,14 @@ private: // Methods
     QString getCurrentPlayerColor();
     QString getBoardFinalStateText(BoardState boardState);
     void declareGameState(BoardState boardState);
+    void updateGameState(Cell& cell);
+
+signals:
+    void turnFinished();
 
 public slots:
     void cellClicked(Cell &cell);
+    void playAIturn();
     void reset();
 };
 
