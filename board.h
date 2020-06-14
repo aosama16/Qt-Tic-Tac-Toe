@@ -1,5 +1,6 @@
 #ifndef BOARD_H
 #define BOARD_H
+#include<QtGlobal>
 
 enum class BoardMarks{
     Empty,
@@ -27,7 +28,9 @@ private: // Methods
 
 public:
     Board();
+#ifdef QT_DEBUG
     void printBoard();
+#endif
     bool setPlayerInput(int row, int col, BoardMarks currentPlayer);
     BoardState updateState(BoardMarks currentPlayer);
     void reset();

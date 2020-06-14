@@ -1,6 +1,8 @@
 #include "board.h"
-#include <QDebug>
 #include <QString>
+#ifdef QT_DEBUG
+#include <QDebug>
+#endif
 
 BoardState Board::getNewState(BoardMarks currentPlayer)
 {
@@ -57,6 +59,7 @@ Board::Board() :
     }
 }
 
+#ifdef QT_DEBUG
 void Board::printBoard()
 {
     QString board;
@@ -68,6 +71,7 @@ void Board::printBoard()
     }
     qDebug().noquote() << board;
 }
+#endif
 
 bool Board::setPlayerInput(int row, int col, BoardMarks currentPlayer)
 {

@@ -84,7 +84,9 @@ void TicTacToeGame::cellClicked(QPushButton* cell, int row, int col)
     if(success){
         cell->setStyleSheet(QString("color: %1;").arg(getCurrentPlayerColor()));
         cell->setText(getCurrentPlayerText());
+#ifdef QT_DEBUG
         board.printBoard();
+#endif
         BoardState boardState = board.updateState(this->currentPlayer);
         if(boardState != BoardState::NoWinner){
             declareGameState(boardState);
