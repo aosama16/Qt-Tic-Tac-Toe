@@ -10,6 +10,18 @@ TicTacToeGame::TicTacToeGame(QWidget *parent) :
 
     currentPlayer = BoardMarks::X;
 
+    // Reference to cells
+    cells.reserve(9);
+    cells.emplace_back(ui->cell_1, 0, 0);
+    cells.emplace_back(ui->cell_2, 0, 1);
+    cells.emplace_back(ui->cell_3, 0, 2);
+    cells.emplace_back(ui->cell_4, 1, 0);
+    cells.emplace_back(ui->cell_5, 1, 1);
+    cells.emplace_back(ui->cell_6, 1, 2);
+    cells.emplace_back(ui->cell_7, 2, 0);
+    cells.emplace_back(ui->cell_8, 2, 1);
+    cells.emplace_back(ui->cell_9, 2, 2);
+
     setConnections();
 }
 
@@ -21,15 +33,8 @@ TicTacToeGame::~TicTacToeGame()
 void TicTacToeGame::setConnections()
 {
     // Cell connections
-    connect(ui->cell_1, &QPushButton::clicked, [=] { cellClicked(ui->cell_1, 0, 0); });
-    connect(ui->cell_2, &QPushButton::clicked, [=] { cellClicked(ui->cell_2, 0, 1); });
-    connect(ui->cell_3, &QPushButton::clicked, [=] { cellClicked(ui->cell_3, 0, 2); });
-    connect(ui->cell_4, &QPushButton::clicked, [=] { cellClicked(ui->cell_4, 1, 0); });
-    connect(ui->cell_5, &QPushButton::clicked, [=] { cellClicked(ui->cell_5, 1, 1); });
-    connect(ui->cell_6, &QPushButton::clicked, [=] { cellClicked(ui->cell_6, 1, 2); });
-    connect(ui->cell_7, &QPushButton::clicked, [=] { cellClicked(ui->cell_7, 2, 0); });
-    connect(ui->cell_8, &QPushButton::clicked, [=] { cellClicked(ui->cell_8, 2, 1); });
-    connect(ui->cell_9, &QPushButton::clicked, [=] { cellClicked(ui->cell_9, 2, 2); });
+    for(Cell& cell: this->cells)
+        connect(cell.cellBtn, &QPushButton::clicked, [&] { cellClicked(cell); });
 
     // New Game Connection - resetting the game
     connect(ui->reset, SIGNAL(clicked()), SLOT(reset()));
@@ -80,19 +85,20 @@ void TicTacToeGame::declareGameState(BoardState boardState)
     resultBox.exec();
 }
 
-void TicTacToeGame::cellClicked(QPushButton* cell, int row, int col)
+void TicTacToeGame::cellClicked(Cell& cell)
 {
-    bool success = board.setPlayerInput(row, col, this->currentPlayer);
+    bool success = board.setPlayerInput(cell.row, cell.col, this->currentPlayer);
     if(success){
-        cell->setStyleSheet(QString("color: %1;").arg(getCurrentPlayerColor()));
-        cell->setText(getCurrentPlayerText());
+        cell.cellBtn->setStyleSheet(QString("color: %1;").arg(getCurrentPlayerColor()));
+        cell.cellBtn->setText(getCurrentPlayerText());
+
 #ifdef QT_DEBUG
         board.printBoard();
 #endif
         BoardState boardState = board.updateState(this->currentPlayer);
-        if(boardState != BoardState::NoWinner){
+        if(boardState != BoardState::NoWinner)
             declareGameState(boardState);
-        }
+
         switchPlayer();
     }
 }
@@ -106,13 +112,6 @@ void TicTacToeGame::reset()
     board.reset();
 
     // Resets the GUI cells to an empty button with no text marks.
-    ui->cell_1->setText("");
-    ui->cell_2->setText("");
-    ui->cell_3->setText("");
-    ui->cell_4->setText("");
-    ui->cell_5->setText("");
-    ui->cell_6->setText("");
-    ui->cell_7->setText("");
-    ui->cell_8->setText("");
-    ui->cell_9->setText("");
+    for(auto& cell : cells)
+        cell.cellBtn->setText("");
 }
