@@ -27,6 +27,8 @@ private: // Methods
     void switchPlayer();
     QString getCurrentPlayerText();
     QString getCurrentPlayerColor();
+    QString getBoardFinalStateText(BoardState boardState);
+    void declareGameState(BoardState boardState);
 
 public slots:
     void cellClicked(QPushButton *cell, int row, int col);

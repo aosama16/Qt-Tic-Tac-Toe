@@ -1,3 +1,4 @@
+#include <QMessageBox>
 #include "TicTacToeGame.h"
 #include "ui_TicTacToeGame.h"
 
@@ -58,6 +59,25 @@ QString TicTacToeGame::getCurrentPlayerColor()
     }
 }
 
+QString TicTacToeGame::getBoardFinalStateText(BoardState boardState)
+{
+    switch (boardState) {
+    case BoardState::XWins: return "Player X wins!";
+    case BoardState::OWins: return "Player O wins!";
+    case BoardState::Tie: return "It's a tie!";
+    default : return "";
+    }
+}
+
+void TicTacToeGame::declareGameState(BoardState boardState)
+{
+    QMessageBox resultBox;
+    resultBox.setWindowTitle("Game Result");
+    resultBox.setMinimumWidth(500);
+    resultBox.setText("Game over, " + getBoardFinalStateText(boardState));
+    resultBox.exec();
+}
+
 void TicTacToeGame::cellClicked(QPushButton* cell, int row, int col)
 {
     bool success = board.setPlayerInput(row, col, this->currentPlayer);
@@ -65,6 +85,10 @@ void TicTacToeGame::cellClicked(QPushButton* cell, int row, int col)
         cell->setStyleSheet(QString("color: %1;").arg(getCurrentPlayerColor()));
         cell->setText(getCurrentPlayerText());
         board.printBoard();
+        BoardState boardState = board.updateState(this->currentPlayer);
+        if(boardState != BoardState::NoWinner){
+            declareGameState(boardState);
+        }
         switchPlayer();
     }
 }
