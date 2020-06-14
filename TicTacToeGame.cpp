@@ -8,6 +8,8 @@ TicTacToeGame::TicTacToeGame(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    currentPlayer = BoardMarks::X;
+
     setConnections();
 }
 
@@ -97,6 +99,9 @@ void TicTacToeGame::cellClicked(QPushButton* cell, int row, int col)
 
 void TicTacToeGame::reset()
 {
+    // Resets the current player back to X
+    currentPlayer = BoardMarks::X;
+
     // Resets the internal Representation of the board.
     board.reset();
 

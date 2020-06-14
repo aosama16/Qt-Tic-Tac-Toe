@@ -19,7 +19,7 @@ public:
 
 private: // Data
     Ui::TicTacToeGame *ui;
-    BoardMarks currentPlayer = BoardMarks::X;
+    BoardMarks currentPlayer;
     Board board;
 
 private: // Methods
