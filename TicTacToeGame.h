@@ -15,7 +15,7 @@ class TicTacToeGame : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit TicTacToeGame(QWidget *parent = nullptr);
+    explicit TicTacToeGame(QWidget *parent = nullptr, int boardSize = 3);
     ~TicTacToeGame();
 
 private: // Types
@@ -43,10 +43,12 @@ private: // Methods
     void setConnections();
     void switchPlayer();
     QString getCurrentPlayerText();
-    QString getCurrentPlayerColor();
+    QString getCurrentPlayerStyleSheet();
     QString getBoardFinalStateText(BoardState boardState);
     void declareGameState(BoardState boardState);
     void updateGameState(Cell& cell);
+
+    void buildCellButtons(int boardSize);
 
 signals:
     void turnFinished();

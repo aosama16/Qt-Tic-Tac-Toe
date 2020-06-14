@@ -6,16 +6,11 @@
 #endif
 
 
-
-Board::Board()
+Board::Board(int boardSize):
+    boardSize(boardSize),
+    board(boardSize, vector<BoardMarks>(boardSize, BoardMarks::Empty))
 {
-    // Sets all the cells to empty.
-	for(int row = 0; row < BOARD_SIZE; ++row){
-        for (int col = 0; col < BOARD_SIZE; ++col){
-            board[row][col] = BoardMarks::Empty;
-        }
-    }
-
+    // Initialize unknown player and AI marks with Empty
     AImark = BoardMarks::Empty;
     playerMark = BoardMarks::Empty;
 }
@@ -24,8 +19,8 @@ Board::Board()
 void Board::printBoard()
 {
     QString board;
-    for(int row = 0; row < BOARD_SIZE; ++row){
-        for (int col = 0; col < BOARD_SIZE; ++col){
+    for(int row = 0; row < this->boardSize; ++row){
+        for (int col = 0; col < this->boardSize; ++col){
             board += QString::number(static_cast<int>(this->board[row][col]));
         }
         board += '\n';
@@ -41,11 +36,11 @@ bool Board::setPlayerInput(int row, int col, BoardMarks currentPlayer)
         return false;
 
     // Row input in not valid.
-    if(row >= this->BOARD_SIZE && row < 0)
+    if(row >= this->boardSize && row < 0)
         return false;
 
     // Column input is not valid.
-    if(col >= this->BOARD_SIZE && col < 0)
+    if(col >= this->boardSize && col < 0)
         return false;
 
     // Cell is not empty.
@@ -61,63 +56,83 @@ bool Board::setPlayerInput(int row, int col, BoardMarks currentPlayer)
 BoardState Board::evaluateBoard()
 {
     // Checks rows for a win for the current player.
-    for(int row = 0; row < BOARD_SIZE; ++row){
-        if(board[row][0] == board[row][1] &&
-           board[row][1] == board[row][2] ){
-            if (board[row][0] == BoardMarks::X)
+    for(int row = 0; row < this->boardSize; ++row){
+        bool equalRow = true;
+        BoardMarks ref = board[row][0];
+        for(int col = 1; col < this->boardSize; ++col){
+            if(board[row][col] != ref)
+                equalRow = false;
+        }
+        if(equalRow){
+            if (ref == BoardMarks::X)
                 return BoardState::XWins;
-            else if (board[row][0] == BoardMarks::O)
+            else if (ref == BoardMarks::O)
                 return BoardState::OWins;
         }
     }
 
     // Checks columns for a win for the current player.
-    for(int col = 0; col < BOARD_SIZE; ++col){
-        if(board[0][col] == board[1][col] &&
-           board[1][col] == board[2][col] ){
-            if (board[0][col] == BoardMarks::X)
+    for(int col = 0; col < this->boardSize; ++col){
+        bool equalCol = true;
+        BoardMarks ref = board[0][col];
+        for(int row = 1; row < this->boardSize; ++row){
+            if(board[row][col] != ref)
+                equalCol = false;
+        }
+        if(equalCol){
+            if (ref == BoardMarks::X)
                 return BoardState::XWins;
-            else if (board[0][col] == BoardMarks::O)
+            else if (ref == BoardMarks::O)
                 return BoardState::OWins;
         }
     }
 
     // Checks diagonals for a win for the current player.
-    if(board[0][0] == board[1][1] &&
-       board[1][1] == board[2][2] ){
-        if (board[0][0] == BoardMarks::X)
+    bool equalDiagonal = true;
+    BoardMarks ref = board[0][0];
+    for(int idx = 1; idx < this->boardSize; ++idx){
+        if(board[idx][idx] != ref)
+            equalDiagonal = false;
+    }
+    if(equalDiagonal){
+        if (ref == BoardMarks::X)
             return BoardState::XWins;
-        else if (board[0][0] == BoardMarks::O)
+        else if (ref == BoardMarks::O)
             return BoardState::OWins;
     }
 
-    if(board[0][2] == board[1][1] &&
-       board[1][1] == board[2][0] ){
-        if (board[0][2] == BoardMarks::X)
+    equalDiagonal = true;
+    ref = board[0][this->boardSize-1];
+    for(int idx = 1; idx < this->boardSize; ++idx){
+        int row = idx;
+        int col = this->boardSize - idx - 1;
+        if(board[row][col] != ref)
+            equalDiagonal = false;
+    }
+    if(equalDiagonal){
+        if (ref == BoardMarks::X)
             return BoardState::XWins;
-        else if (board[0][2] == BoardMarks::O)
+        else if (ref == BoardMarks::O)
             return BoardState::OWins;
     }
 
-    // If all the cells are filled and no winner is determined,
-    // then the new state is a tie.
-    short emptyCellsCount = 0;
-    for(int row = 0; row < BOARD_SIZE; ++row)
-        for (int col = 0; col < BOARD_SIZE; ++col)
+    // If there is an empty cell and no winner is determined, then the game is still ongoing.
+    for(int row = 0; row < this->boardSize; ++row)
+        for (int col = 0; col < this->boardSize; ++col)
             if(board[row][col] == BoardMarks::Empty)
-                ++emptyCellsCount;
-    if(emptyCellsCount == 0)
-        return BoardState::Tie;
+                return BoardState::NoWinner;
 
-    // If none of the other states are determined then the game is still ongoing.
-    return BoardState::NoWinner;
+
+    // If no winner is determined and there are no empty cells, then the game is a tie.
+    return BoardState::Tie;
+
 }
 
 void Board::reset()
 {
     // Sets all the cells to empty.
-    for(int row = 0; row < BOARD_SIZE; ++row){
-        for (int col = 0; col < BOARD_SIZE; ++col){
+    for(int row = 0; row < this->boardSize; ++row){
+        for (int col = 0; col < this->boardSize; ++col){
             board[row][col] = BoardMarks::Empty;
         }
     }
@@ -152,8 +167,8 @@ int Board::miniMax(BoardMarks currentPlayer)
 
     int bestScore = INT_MIN;
     QPair<int, int> bestEntry;
-    for(int row = 0; row < BOARD_SIZE; ++row){
-        for (int col = 0; col < BOARD_SIZE; ++col){
+    for(int row = 0; row < this->boardSize; ++row){
+        for (int col = 0; col < this->boardSize; ++col){
             if(board[row][col] == BoardMarks::Empty){
                 // Try the move
                 board[row][col] = AImark;
@@ -172,7 +187,7 @@ int Board::miniMax(BoardMarks currentPlayer)
     }
 
     board[bestEntry.first][bestEntry.second] = currentPlayer;
-    return bestEntry.first * this->BOARD_SIZE + bestEntry.second;
+    return bestEntry.first * this->boardSize + bestEntry.second;
 }
 
 int Board::maxMove()
@@ -183,8 +198,8 @@ int Board::maxMove()
         return score(state);
 
     int bestScore = INT_MIN;
-    for(int row = 0; row < BOARD_SIZE; ++row){
-        for (int col = 0; col < BOARD_SIZE; ++col){
+    for(int row = 0; row < this->boardSize; ++row){
+        for (int col = 0; col < this->boardSize; ++col){
             if(board[row][col] == BoardMarks::Empty){
                 // Try the move
                 board[row][col] = this->AImark;
@@ -208,8 +223,8 @@ int Board::minMove()
         return score(state);
 
     int bestScore = INT_MAX;
-    for(int row = 0; row < BOARD_SIZE; ++row){
-        for (int col = 0; col < BOARD_SIZE; ++col){
+    for(int row = 0; row < this->boardSize; ++row){
+        for (int col = 0; col < this->boardSize; ++col){
             if(board[row][col] == BoardMarks::Empty){
                 // Try the move
                 board[row][col] = playerMark;

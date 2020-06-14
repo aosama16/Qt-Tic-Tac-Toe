@@ -1,6 +1,7 @@
 #ifndef BOARD_H
 #define BOARD_H
-#include<QtGlobal>
+#include <QtGlobal>
+#include <vector>
 
 enum class BoardMarks{
     Empty,
@@ -15,11 +16,14 @@ enum class BoardState{
     Tie
 };
 
+using std::vector;
+
 class Board
 {
+
 private: // Data
-    const static int BOARD_SIZE = 3;
-    BoardMarks board[BOARD_SIZE][BOARD_SIZE];
+    vector<vector<BoardMarks>>board;
+    int boardSize;
     BoardMarks AImark;
     BoardMarks playerMark;
 
@@ -29,7 +33,7 @@ private: // Methods
     int score(BoardState state);
 
 public:
-    Board();
+    Board(int boardSize);
     BoardState evaluateBoard();
     bool setPlayerInput(int row, int col, BoardMarks currentPlayer);
     int miniMax(BoardMarks currentPlayer);

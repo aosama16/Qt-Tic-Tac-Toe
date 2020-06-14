@@ -1,28 +1,22 @@
 #include <QMessageBox>
 #include "TicTacToeGame.h"
 #include "ui_TicTacToeGame.h"
+#include <QDebug>
 
-TicTacToeGame::TicTacToeGame(QWidget *parent) :
+
+
+TicTacToeGame::TicTacToeGame(QWidget *parent, int boardSize) :
     QMainWindow(parent),
-    ui(new Ui::TicTacToeGame)
+    ui(new Ui::TicTacToeGame),
+    board(boardSize)
 {
     ui->setupUi(this);
 
     currentPlayer = BoardMarks::X;
     AIopponent = true;
-    startWithAI = true;
+    startWithAI = false;
 
-    // Reference to cells
-    cells.reserve(9);
-    cells.emplace_back(ui->cell_1, 0, 0);
-    cells.emplace_back(ui->cell_2, 0, 1);
-    cells.emplace_back(ui->cell_3, 0, 2);
-    cells.emplace_back(ui->cell_4, 1, 0);
-    cells.emplace_back(ui->cell_5, 1, 1);
-    cells.emplace_back(ui->cell_6, 1, 2);
-    cells.emplace_back(ui->cell_7, 2, 0);
-    cells.emplace_back(ui->cell_8, 2, 1);
-    cells.emplace_back(ui->cell_9, 2, 2);
+    buildCellButtons(boardSize);
 
     setConnections();
 
@@ -33,6 +27,21 @@ TicTacToeGame::TicTacToeGame(QWidget *parent) :
 TicTacToeGame::~TicTacToeGame()
 {
     delete ui;
+}
+
+void TicTacToeGame::buildCellButtons(int boardSize)
+{
+    cells.reserve(boardSize * boardSize);
+    for(int row = 0; row < boardSize; ++row){
+        for (int col = 0; col < boardSize; ++col){
+            // Add buttons to gridLayout
+            QPushButton* btn = new QPushButton();
+            btn->setProperty("cell", true);
+            ui->gridBoard->addWidget(btn, row, col, 1, 1);
+            // Reference to cells
+            cells.emplace_back(btn, row, col);
+        }
+    }
 }
 
 void TicTacToeGame::setConnections()
@@ -66,13 +75,22 @@ QString TicTacToeGame::getCurrentPlayerText()
     }
 }
 
-QString TicTacToeGame::getCurrentPlayerColor()
+QString TicTacToeGame::getCurrentPlayerStyleSheet()
 {
+    QString color;
+
     switch (this->currentPlayer) {
-    case BoardMarks::O: return "#FF5722";
-    case BoardMarks::X: return "#455A64";
-    default : return "";
+    case BoardMarks::O: color = "#FF5722"; break;
+    case BoardMarks::X: color = "#455A64"; break;
+    default : return "#FFF";
     }
+
+    return QString("font: 50px \"Verdana\";"
+                   "min-height: 100px;"
+                   "max-height: 100px;"
+                   "min-width: 100px;"
+                   "max-width: 100px;"
+                   "color: %1").arg(color);
 }
 
 QString TicTacToeGame::getBoardFinalStateText(BoardState boardState)
@@ -103,7 +121,7 @@ void TicTacToeGame::declareGameState(BoardState boardState)
 void TicTacToeGame::updateGameState(Cell& cell)
 {
     // Update Cell button in GUI
-    cell.cellBtn->setStyleSheet(QString("color: %1;").arg(getCurrentPlayerColor()));
+    cell.cellBtn->setStyleSheet(getCurrentPlayerStyleSheet());
     cell.cellBtn->setText(getCurrentPlayerText());
 
 #ifdef QT_DEBUG
