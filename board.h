@@ -20,21 +20,24 @@ class Board
 private: // Data
     const static int BOARD_SIZE = 3;
     BoardMarks board[BOARD_SIZE][BOARD_SIZE];
-    BoardState state;
-    short inputCount;
+    BoardMarks AImark;
+    BoardMarks playerMark;
 
 private: // Methods
-    BoardState getNewState(BoardMarks currentPlayer);
+    int maxMove();
+    int minMove();
+    int score(BoardState state);
 
 public:
     Board();
+    BoardState evaluateBoard();
+    bool setPlayerInput(int row, int col, BoardMarks currentPlayer);
+    int miniMax(BoardMarks currentPlayer);
+    BoardState updateState();
+    void reset();
 #ifdef QT_DEBUG
     void printBoard();
 #endif
-    bool setPlayerInput(int row, int col, BoardMarks currentPlayer);
-    int getAIcellIdxInput(BoardMarks currentPlayer);
-    BoardState updateState(BoardMarks currentPlayer);
-    void reset();
 };
 
 #endif // BOARD_H

@@ -1,55 +1,13 @@
 #include "board.h"
 #include <QString>
+#include <QPair>
 #ifdef QT_DEBUG
 #include <QDebug>
 #endif
 
-BoardState Board::getNewState(BoardMarks currentPlayer)
-{
-    // Sets possible new state based on the current player.
-    BoardState newState = BoardState::NoWinner;
-    if(currentPlayer == BoardMarks::X)
-        newState = BoardState::XWins;
-    else if (currentPlayer == BoardMarks::O)
-        newState = BoardState::OWins;
 
-    // Checks rows for a win for the current player.
-    for(int row = 0; row < BOARD_SIZE; ++row)
-        if(board[row][0] == currentPlayer &&
-           board[row][1] == currentPlayer &&
-           board[row][2] == currentPlayer )
-            return newState;
 
-    // Checks columns for a win for the current player.
-    for(int col = 0; col < BOARD_SIZE; ++col)
-        if(board[0][col] == currentPlayer &&
-           board[1][col] == currentPlayer &&
-           board[2][col] == currentPlayer )
-            return newState;
-
-    // Checks diagonals for a win for the current player.
-    if(board[0][0] == currentPlayer &&
-       board[1][1] == currentPlayer &&
-       board[2][2] == currentPlayer )
-        return newState;
-
-    if(board[0][2] == currentPlayer &&
-       board[1][1] == currentPlayer &&
-       board[2][0] == currentPlayer )
-        return newState;
-
-    // If all the cells are filled and no winner is determined,
-    // then the new state is a tie.
-    if(this->inputCount == this->BOARD_SIZE * this->BOARD_SIZE)
-        return BoardState::Tie;
-
-    // If none of the other states are determined then the game is still ongoing.
-    return BoardState::NoWinner;
-}
-
-Board::Board() :
-    state(BoardState::NoWinner),
-    inputCount(0)
+Board::Board()
 {
     // Sets all the cells to empty.
 	for(int row = 0; row < BOARD_SIZE; ++row){
@@ -57,6 +15,9 @@ Board::Board() :
             board[row][col] = BoardMarks::Empty;
         }
     }
+
+    AImark = BoardMarks::Empty;
+    playerMark = BoardMarks::Empty;
 }
 
 #ifdef QT_DEBUG
@@ -76,7 +37,7 @@ void Board::printBoard()
 bool Board::setPlayerInput(int row, int col, BoardMarks currentPlayer)
 {
     // The game is over, so no input is allowed untill game resets.
-    if(state != BoardState::NoWinner)
+    if(evaluateBoard() != BoardState::NoWinner)
         return false;
 
     // Row input in not valid.
@@ -93,46 +54,174 @@ bool Board::setPlayerInput(int row, int col, BoardMarks currentPlayer)
 
     // Update cell with current player's mark.
     this->board[row][col] = currentPlayer;
-    // Increase the count of inputs to help in detecting a Tie state.
-    ++this->inputCount;
 
     return true;
 }
 
-int Board::getAIcellIdxInput(BoardMarks currentPlayer)
+BoardState Board::evaluateBoard()
 {
-    if(state != BoardState::NoWinner)
-        return -1;
-
+    // Checks rows for a win for the current player.
     for(int row = 0; row < BOARD_SIZE; ++row){
-        for (int col = 0; col < BOARD_SIZE; ++col){
-            if(board[row][col] == BoardMarks::Empty){
-                board[row][col] = currentPlayer;
-                ++this->inputCount;
-                return row * this->BOARD_SIZE + col;
-            }
+        if(board[row][0] == board[row][1] &&
+           board[row][1] == board[row][2] ){
+            if (board[row][0] == BoardMarks::X)
+                return BoardState::XWins;
+            else if (board[row][0] == BoardMarks::O)
+                return BoardState::OWins;
         }
     }
-    return -1;
-}
 
-BoardState Board::updateState(BoardMarks currentPlayer)
-{
-    // Updates the state with the new state and returns it to the game.
-    return this->state = getNewState(currentPlayer);
+    // Checks columns for a win for the current player.
+    for(int col = 0; col < BOARD_SIZE; ++col){
+        if(board[0][col] == board[1][col] &&
+           board[1][col] == board[2][col] ){
+            if (board[0][col] == BoardMarks::X)
+                return BoardState::XWins;
+            else if (board[0][col] == BoardMarks::O)
+                return BoardState::OWins;
+        }
+    }
+
+    // Checks diagonals for a win for the current player.
+    if(board[0][0] == board[1][1] &&
+       board[1][1] == board[2][2] ){
+        if (board[0][0] == BoardMarks::X)
+            return BoardState::XWins;
+        else if (board[0][0] == BoardMarks::O)
+            return BoardState::OWins;
+    }
+
+    if(board[0][2] == board[1][1] &&
+       board[1][1] == board[2][0] ){
+        if (board[0][2] == BoardMarks::X)
+            return BoardState::XWins;
+        else if (board[0][2] == BoardMarks::O)
+            return BoardState::OWins;
+    }
+
+    // If all the cells are filled and no winner is determined,
+    // then the new state is a tie.
+    short emptyCellsCount = 0;
+    for(int row = 0; row < BOARD_SIZE; ++row)
+        for (int col = 0; col < BOARD_SIZE; ++col)
+            if(board[row][col] == BoardMarks::Empty)
+                ++emptyCellsCount;
+    if(emptyCellsCount == 0)
+        return BoardState::Tie;
+
+    // If none of the other states are determined then the game is still ongoing.
+    return BoardState::NoWinner;
 }
 
 void Board::reset()
 {
-    // Resets the state to the default state - No Winner
-    state = BoardState::NoWinner;
-    // Resets the input count
-    inputCount = 0;
-
     // Sets all the cells to empty.
     for(int row = 0; row < BOARD_SIZE; ++row){
         for (int col = 0; col < BOARD_SIZE; ++col){
             board[row][col] = BoardMarks::Empty;
         }
     }
+
+    AImark = BoardMarks::Empty;
+    playerMark = BoardMarks::Empty;
 }
+
+int Board::score(BoardState state)
+{
+    if (AImark == BoardMarks::O && state == BoardState::OWins)
+        return 1;
+    else if (AImark == BoardMarks::X && state == BoardState::XWins)
+        return 1;
+    else if (AImark == BoardMarks::O && state == BoardState::XWins)
+        return -1;
+    else if (AImark == BoardMarks::X && state == BoardState::OWins)
+        return -1;
+    else
+        return 0;
+}
+
+int Board::miniMax(BoardMarks currentPlayer)
+{
+    if(evaluateBoard() != BoardState::NoWinner)
+        return -1;
+
+    if(AImark == BoardMarks::Empty){
+        AImark = currentPlayer;
+        playerMark = (this->AImark == BoardMarks::O ? BoardMarks::X : BoardMarks::O);
+    }
+
+    int bestScore = INT_MIN;
+    QPair<int, int> bestEntry;
+    for(int row = 0; row < BOARD_SIZE; ++row){
+        for (int col = 0; col < BOARD_SIZE; ++col){
+            if(board[row][col] == BoardMarks::Empty){
+                // Try the move
+                board[row][col] = AImark;
+
+                int moveScore = minMove();
+                if(moveScore > bestScore){
+                    bestScore = moveScore;
+                    bestEntry.first = row;;
+                    bestEntry.second = col;
+                }
+
+                // Reset the move done
+                board[row][col] = BoardMarks::Empty;
+            }
+        }
+    }
+
+    board[bestEntry.first][bestEntry.second] = currentPlayer;
+    return bestEntry.first * this->BOARD_SIZE + bestEntry.second;
+}
+
+int Board::maxMove()
+{
+    // if game over return score
+    BoardState state = evaluateBoard();
+    if(state != BoardState::NoWinner)
+        return score(state);
+
+    int bestScore = INT_MIN;
+    for(int row = 0; row < BOARD_SIZE; ++row){
+        for (int col = 0; col < BOARD_SIZE; ++col){
+            if(board[row][col] == BoardMarks::Empty){
+                // Try the move
+                board[row][col] = this->AImark;
+
+                // Compare result of this move with respect to AI
+                bestScore = std::max(bestScore, minMove());
+
+                // Reset the move done
+                board[row][col] = BoardMarks::Empty;
+            }
+        }
+    }
+    return bestScore;
+}
+
+int Board::minMove()
+{
+    // if game over return score
+    BoardState state = evaluateBoard();
+    if(state != BoardState::NoWinner)
+        return score(state);
+
+    int bestScore = INT_MAX;
+    for(int row = 0; row < BOARD_SIZE; ++row){
+        for (int col = 0; col < BOARD_SIZE; ++col){
+            if(board[row][col] == BoardMarks::Empty){
+                // Try the move
+                board[row][col] = playerMark;
+
+                // Compare result of this move with respect to player
+                bestScore = std::min(bestScore, maxMove());
+
+                // Reset the move done
+                board[row][col] = BoardMarks::Empty;
+            }
+        }
+    }
+    return bestScore;
+}
+

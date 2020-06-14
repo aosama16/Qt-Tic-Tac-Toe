@@ -9,7 +9,7 @@ TicTacToeGame::TicTacToeGame(QWidget *parent) :
     ui->setupUi(this);
 
     currentPlayer = BoardMarks::X;
-    AIopponent = false;
+    AIopponent = true;
     startWithAI = true;
 
     // Reference to cells
@@ -87,7 +87,7 @@ QString TicTacToeGame::getBoardFinalStateText(BoardState boardState)
 
 void TicTacToeGame::playAIturn()
 {
-    int cellIdx = board.getAIcellIdxInput(this->currentPlayer);
+    int cellIdx = board.miniMax(this->currentPlayer);
     if(cellIdx != -1)
         updateGameState(cells.at(cellIdx));
 }
@@ -110,7 +110,7 @@ void TicTacToeGame::updateGameState(Cell& cell)
     board.printBoard();
 #endif
     // Update board state and declare state if its a final state
-    BoardState boardState = board.updateState(this->currentPlayer);
+    BoardState boardState = board.evaluateBoard();
     if(boardState != BoardState::NoWinner)
         declareGameState(boardState);
 
