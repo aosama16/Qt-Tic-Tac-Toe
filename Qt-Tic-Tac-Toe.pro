@@ -24,27 +24,34 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 CONFIG += c++14
 
+INCLUDEPATH += \
+    AI \
+    Model \
+    View \
+    Controller \
+    Forms
+
 SOURCES += \
     main.cpp \
-    TicTacToeGame.cpp \
-    MiniMaxAgent.cpp \
-    Board.cpp \
-    TitleScreen.cpp \
-    TTTController.cpp
+    AI/MiniMaxAgent.cpp \
+    Model/Board.cpp \
+    View/TicTacToeGame.cpp \
+    View/TitleScreen.cpp \
+    Controller/TTTController.cpp
 
 HEADERS += \
-    TicTacToeGame.h \
-    AIAgent.h \
-    MiniMaxAgent.h \
-    TTTCommonTypes.h \
-    Board.h \
-    TitleScreen.h \
-    TTTController.h \
-    NoAgent.h
+    AI/AIAgent.h \
+    AI/NoAgent.h \
+    AI/MiniMaxAgent.h \
+    Model/Board.h \
+    View/TicTacToeGame.h \
+    View/TitleScreen.h \
+    Controller/TTTController.h \
+    TTTCommonTypes.h
 
 FORMS += \
-    TicTacToeGame.ui \
-    titlescreen.ui
+    Forms/TicTacToeGame.ui \
+    Forms/titlescreen.ui
 
 RC_ICONS = images/icon.ico
 
