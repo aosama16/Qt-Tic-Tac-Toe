@@ -1,7 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "tttcommontypes.h"
+#include "TTTCommonTypes.h"
 #include <QDialog>
 #include <vector>
 

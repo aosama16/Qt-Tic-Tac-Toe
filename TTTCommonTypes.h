@@ -11,7 +11,7 @@ struct Cell {
         : cellBtn(cellBtn), row(row), col(col) {}
 };
 
-struct TTTOptions{
+struct TTTOptions {
     int boardSize = 3;
     int miniMaxDepth = 3;
     bool AIopponent = true;

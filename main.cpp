@@ -1,5 +1,5 @@
 #include "TicTacToeGame.h"
-#include "titlescreen.h"
+#include "TitleScreen.h"
 #include <QApplication>
 
 int main(int argc, char *argv[]) {

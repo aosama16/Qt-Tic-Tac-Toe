@@ -1,28 +1,27 @@
-#include "tttcontroller.h"
+#include "TTTController.h"
+#include "MiniMaxAgent.h"
+#include "NoAgent.h"
 #include "TicTacToeGame.h"
 #include <QPushButton>
 
 TTTController::TTTController(TTTOptions &options, QObject *parent)
-    : QObject(parent),
-      view(),
-      board(options.boardSize),
-      options(options),
-      currentPlayer(BoardMarks::X)
-{
+    : QObject(parent), view(), board(options.boardSize), options(options),
+      currentPlayer(BoardMarks::X) {
     cells = view.buildCellButtons(options.boardSize);
     setConnections();
+
+    if (this->options.AIopponent)
+        agent = std::make_unique<MiniMaxAgent>(this->options.miniMaxDepth);
+    else
+        agent = std::make_unique<NoAgent>();
 
     // Setup a new game
     reset();
 }
 
-void TTTController::startGame()
-{
-    view.exec();
-}
+void TTTController::startGame() { view.exec(); }
 
-void TTTController::setConnections()
-{
+void TTTController::setConnections() {
     // Cell connections
     for (Cell &cell : this->cells)
         connect(cell.cellBtn, &QPushButton::clicked, [&] { updateGame(cell); });
@@ -31,13 +30,10 @@ void TTTController::setConnections()
     connect(&view, &TicTacToeGame::newGame, this, [&] { reset(); });
 
     // Connect AI to play after a cell is chosen by human input
-    if (this->options.AIopponent)
-        connect(this, &turnFinished, [=] { AIAgentPlay(); });
-
+    connect(this, &turnFinished, [=] { AIAgentPlay(); });
 }
 
-void TTTController::updateGameState(Cell &cell)
-{
+void TTTController::updateGameState(Cell &cell) {
 
     this->view.updateCell(cell, this->currentPlayer);
 
@@ -53,8 +49,7 @@ void TTTController::updateGameState(Cell &cell)
     switchPlayer();
 }
 
-void TTTController::reset()
-{
+void TTTController::reset() {
     // Resets the current player back to X
     currentPlayer = BoardMarks::X;
     // Resets the View GUI elements.
@@ -62,27 +57,24 @@ void TTTController::reset()
     // Resets the internal Representation of the board.
     board.reset();
     // Start AI play
-    if (this->options.AIopponent && this->options.AIstarts)
+    if (this->options.AIstarts)
         AIAgentPlay();
 }
 
-void TTTController::AIAgentPlay()
-{
-    int cellIdx = board.miniMax(this->currentPlayer, this->options.miniMaxDepth);
+void TTTController::AIAgentPlay() {
+    int cellIdx = agent->play(this->board, this->currentPlayer);
     if (cellIdx != -1)
         updateGameState(cells.at(cellIdx));
 }
 
-void TTTController::switchPlayer()
-{
+void TTTController::switchPlayer() {
     if (this->currentPlayer == BoardMarks::X)
         this->currentPlayer = BoardMarks::O;
     else if (this->currentPlayer == BoardMarks::O)
         this->currentPlayer = BoardMarks::X;
 }
 
-void TTTController::updateGame(Cell &cell)
-{
+void TTTController::updateGame(Cell &cell) {
     bool success = board.setPlayerInput(cell.row, cell.col, this->currentPlayer);
     if (success) {
         updateGameState(cell);

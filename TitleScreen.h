@@ -1,7 +1,7 @@
 #ifndef TITLESCREEN_H
 #define TITLESCREEN_H
+#include "TTTCommonTypes.h"
 #include <QMainWindow>
-#include "tttcommontypes.h"
 
 namespace Ui {
 class TitleScreen;

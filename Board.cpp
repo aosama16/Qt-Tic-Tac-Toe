@@ -1,5 +1,4 @@
-#include "board.h"
-#include <QPair>
+#include "Board.h"
 #include <QString>
 #ifdef QT_DEBUG
 #include <QDebug>
@@ -7,11 +6,7 @@
 
 Board::Board(int size)
     : board(size, vector<BoardMarks>(size, BoardMarks::Empty)),
-      boardSize(size) {
-    // Initialize unknown player and AI marks with Empty
-    AImark = BoardMarks::Empty;
-    playerMark = BoardMarks::Empty;
-}
+      boardSize(size) {}
 
 #ifdef QT_DEBUG
 void Board::printBoard() {
@@ -48,6 +43,10 @@ bool Board::setPlayerInput(int row, int col, BoardMarks currentPlayer) {
 
     return true;
 }
+
+BoardMarks Board::at(int row, int col) { return board[row][col]; }
+
+void Board::set(int row, int col, BoardMarks mark) { board[row][col] = mark; }
 
 BoardState Board::evaluateBoard() {
     // Checks rows for a win for the current player.
@@ -130,114 +129,6 @@ void Board::reset() {
             board[row][col] = BoardMarks::Empty;
         }
     }
-
-    AImark = BoardMarks::Empty;
-    playerMark = BoardMarks::Empty;
 }
 
-int Board::score(BoardState state) {
-    if (AImark == BoardMarks::O && state == BoardState::OWins)
-        return 1;
-    else if (AImark == BoardMarks::X && state == BoardState::XWins)
-        return 1;
-    else if (AImark == BoardMarks::O && state == BoardState::XWins)
-        return -1;
-    else if (AImark == BoardMarks::X && state == BoardState::OWins)
-        return -1;
-    else
-        return 0;
-}
-
-int Board::miniMax(BoardMarks currentPlayer, int depth) {
-    if (evaluateBoard() != BoardState::NoWinner)
-        return -1;
-
-    if (AImark == BoardMarks::Empty) {
-        AImark = currentPlayer;
-        playerMark =
-            (this->AImark == BoardMarks::O ? BoardMarks::X : BoardMarks::O);
-    }
-
-    int bestScore = INT_MIN;
-    QPair<int, int> bestEntry;
-    for (int row = 0; row < this->boardSize; ++row) {
-        for (int col = 0; col < this->boardSize; ++col) {
-            if (board[row][col] == BoardMarks::Empty) {
-                // Try the move
-                board[row][col] = AImark;
-
-                int moveScore = minMove(depth - 1, INT_MIN, INT_MAX);
-                if (moveScore > bestScore) {
-                    bestScore = moveScore;
-                    bestEntry.first = row;
-                    ;
-                    bestEntry.second = col;
-                }
-
-                // Reset the move done
-                board[row][col] = BoardMarks::Empty;
-            }
-        }
-    }
-
-    board[bestEntry.first][bestEntry.second] = currentPlayer;
-    return bestEntry.first * this->boardSize + bestEntry.second;
-}
-
-int Board::maxMove(int depth, int alpha, int beta) {
-    // if game over return score
-    BoardState state = evaluateBoard();
-    if (depth == 0 || state != BoardState::NoWinner)
-        return score(state);
-
-    int bestScore = INT_MIN;
-    for (int row = 0; row < this->boardSize; ++row) {
-        for (int col = 0; col < this->boardSize; ++col) {
-            if (board[row][col] == BoardMarks::Empty) {
-                // Try the move
-                board[row][col] = this->AImark;
-
-                // Compare result of this move with respect to AI
-                int score = minMove(depth - 1, alpha, beta);
-
-                // Reset the move done
-                board[row][col] = BoardMarks::Empty;
-
-                bestScore = std::max(bestScore, score);
-                alpha = std::max(alpha, score);
-                if (beta <= alpha)
-                    break;
-            }
-        }
-    }
-    return bestScore;
-}
-
-int Board::minMove(int depth, int alpha, int beta) {
-    // if game over return score
-    BoardState state = evaluateBoard();
-    if (depth == 0 || state != BoardState::NoWinner)
-        return score(state);
-
-    int bestScore = INT_MAX;
-    for (int row = 0; row < this->boardSize; ++row) {
-        for (int col = 0; col < this->boardSize; ++col) {
-            if (board[row][col] == BoardMarks::Empty) {
-                // Try the move
-                board[row][col] = playerMark;
-
-                // Compare result of this move with respect to player
-                int score = maxMove(depth - 1, alpha, beta);
-
-                // Reset the move done
-                board[row][col] = BoardMarks::Empty;
-
-                bestScore = std::min(bestScore, score);
-                beta = std::min(beta, score);
-                if (beta <= alpha)
-                    break;
-            }
-        }
-    }
-    return bestScore;
-}
+int Board::size() { return this->boardSize; }

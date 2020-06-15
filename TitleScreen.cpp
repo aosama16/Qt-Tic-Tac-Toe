@@ -1,9 +1,9 @@
-#include "titlescreen.h"
+#include "TitleScreen.h"
+#include "TTTController.h"
 #include "ui_titlescreen.h"
-#include "tttcontroller.h"
 
 TitleScreen::TitleScreen(QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::TitleScreen){
+    : QMainWindow(parent), ui(new Ui::TitleScreen) {
     ui->setupUi(this);
     setConnections();
 }

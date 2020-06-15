@@ -1,8 +1,8 @@
 #ifndef BOARD_H
 #define BOARD_H
+#include "TTTCommonTypes.h"
 #include <QtGlobal>
 #include <vector>
-#include "tttcommontypes.h"
 
 using std::vector;
 
@@ -11,21 +11,15 @@ class Board {
 private: // Data
     vector<vector<BoardMarks>> board;
     int boardSize;
-    BoardMarks AImark;
-    BoardMarks playerMark;
-
-private: // Methods
-    int maxMove(int depth, int alpha, int beta);
-    int minMove(int depth, int alpha, int beta);
-    int score(BoardState state);
 
 public:
     Board(int size);
     BoardState evaluateBoard();
     bool setPlayerInput(int row, int col, BoardMarks currentPlayer);
-    int miniMax(BoardMarks currentPlayer, int depth);
-    BoardState updateState();
+    BoardMarks at(int row, int col);
+    void set(int row, int col, BoardMarks mark);
     void reset();
+    int size();
 #ifdef QT_DEBUG
     void printBoard();
 #endif
