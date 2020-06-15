@@ -1,30 +1,24 @@
 #include "TicTacToeGame.h"
-
-#include <QDebug>
-#include <QMessageBox>
-
 #include "ui_TicTacToeGame.h"
+#include <QMessageBox>
+#include <QPushButton>
 
-TicTacToeGame::TicTacToeGame(QWidget *parent, int boardSize, bool AIopponent,
-                             bool AIstarts, int miniMaxDepth)
-    : QDialog(parent), ui(new Ui::TicTacToeGame), board(boardSize),
-      AIopponent(AIopponent), startWithAI(AIstarts),
-      miniMaxDepth(miniMaxDepth) {
+TicTacToeGame::TicTacToeGame(QWidget *parent)
+    : QDialog(parent), ui(new Ui::TicTacToeGame) {
     ui->setupUi(this);
-
-    currentPlayer = BoardMarks::X;
-
-    buildCellButtons(boardSize);
-
     setConnections();
-
-    // Setup a new game
-    reset();
 }
 
 TicTacToeGame::~TicTacToeGame() { delete ui; }
 
-void TicTacToeGame::buildCellButtons(int boardSize) {
+void TicTacToeGame::setConnections() {
+    // New Game Connection - resetting the game
+    connect(ui->reset, &QPushButton::clicked, [=] { emit newGame(); });
+    connect(ui->back, &QPushButton::clicked, [=] { this->close(); });
+}
+
+vector<Cell> TicTacToeGame::buildCellButtons(int boardSize) {
+    vector<Cell> cells;
     cells.reserve(boardSize * boardSize);
     for (int row = 0; row < boardSize; ++row) {
         for (int col = 0; col < boardSize; ++col) {
@@ -38,32 +32,12 @@ void TicTacToeGame::buildCellButtons(int boardSize) {
     }
     // Adjusts wnindow size to fit children widgets added dynamically
     this->adjustSize();
+
+    return cells;
 }
 
-void TicTacToeGame::setConnections() {
-    // Cell connections
-    for (Cell &cell : this->cells)
-        connect(cell.cellBtn, &QPushButton::clicked, [&] { cellClicked(cell); });
-
-    // New Game Connection - resetting the game
-    connect(ui->reset, SIGNAL(clicked()), SLOT(reset()));
-
-    // Connect AI to play after a cell is chosen by human input
-    if (this->AIopponent)
-        connect(this, SIGNAL(turnFinished()), this, SLOT(playAIturn()));
-
-    connect(ui->back, SIGNAL(clicked(bool)), SLOT(backToTitle()));
-}
-
-void TicTacToeGame::switchPlayer() {
-    if (this->currentPlayer == BoardMarks::X)
-        this->currentPlayer = BoardMarks::O;
-    else if (this->currentPlayer == BoardMarks::O)
-        this->currentPlayer = BoardMarks::X;
-}
-
-QString TicTacToeGame::getCurrentPlayerText() {
-    switch (this->currentPlayer) {
+QString TicTacToeGame::getPlayerText(BoardMarks currentPlayer) {
+    switch (currentPlayer) {
     case BoardMarks::O:
         return "O";
     case BoardMarks::X:
@@ -73,10 +47,10 @@ QString TicTacToeGame::getCurrentPlayerText() {
     }
 }
 
-QString TicTacToeGame::getCurrentPlayerStyleSheet() {
+QString TicTacToeGame::getPlayerStyleSheet(BoardMarks currentPlayer) {
     QString color;
 
-    switch (this->currentPlayer) {
+    switch (currentPlayer) {
     case BoardMarks::O:
         color = "#FF5722";
         break;
@@ -96,23 +70,23 @@ QString TicTacToeGame::getCurrentPlayerStyleSheet() {
         .arg(color);
 }
 
+void TicTacToeGame::updateCell(Cell &cell, BoardMarks currentPlayer) {
+    // Update Cell button in GUI
+    cell.cellBtn->setStyleSheet(getPlayerStyleSheet(currentPlayer));
+    cell.cellBtn->setText(getPlayerText(currentPlayer));
+}
+
 QString TicTacToeGame::getBoardFinalStateText(BoardState boardState) {
     switch (boardState) {
     case BoardState::XWins:
-        return "Player X wins!";
+        return "player X wins!";
     case BoardState::OWins:
-        return "Player O wins!";
+        return "player O wins!";
     case BoardState::Tie:
-        return "It's a tie!";
+        return "it's a tie!";
     default:
         return "";
     }
-}
-
-void TicTacToeGame::playAIturn() {
-    int cellIdx = board.miniMax(this->currentPlayer, this->miniMaxDepth);
-    if (cellIdx != -1)
-        updateGameState(cells.at(cellIdx));
 }
 
 void TicTacToeGame::declareGameState(BoardState boardState) {
@@ -122,44 +96,8 @@ void TicTacToeGame::declareGameState(BoardState boardState) {
     resultBox.exec();
 }
 
-void TicTacToeGame::updateGameState(Cell &cell) {
-    // Update Cell button in GUI
-    cell.cellBtn->setStyleSheet(getCurrentPlayerStyleSheet());
-    cell.cellBtn->setText(getCurrentPlayerText());
-
-#ifdef QT_DEBUG
-    board.printBoard();
-#endif
-    // Update board state and declare state if its a final state
-    BoardState boardState = board.evaluateBoard();
-    if (boardState != BoardState::NoWinner)
-        declareGameState(boardState);
-
-    // Switch the players
-    switchPlayer();
-}
-
-void TicTacToeGame::cellClicked(Cell &cell) {
-    bool success = board.setPlayerInput(cell.row, cell.col, this->currentPlayer);
-    if (success) {
-        updateGameState(cell);
-        emit turnFinished();
-    }
-}
-
-void TicTacToeGame::reset() {
-    // Resets the current player back to X
-    currentPlayer = BoardMarks::X;
-
-    // Resets the internal Representation of the board.
-    board.reset();
-
+void TicTacToeGame::reset(vector<Cell> &cells) {
     // Resets the GUI cells to an empty button with no text marks.
     for (auto &cell : cells)
         cell.cellBtn->setText("");
-
-    if (this->AIopponent && this->startWithAI)
-        playAIturn();
 }
-
-void TicTacToeGame::backToTitle() { this->close(); }

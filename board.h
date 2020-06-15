@@ -2,10 +2,7 @@
 #define BOARD_H
 #include <QtGlobal>
 #include <vector>
-
-enum class BoardMarks { Empty, X, O };
-
-enum class BoardState { NoWinner, XWins, OWins, Tie };
+#include "tttcommontypes.h"
 
 using std::vector;
 

@@ -1,8 +1,7 @@
 #ifndef TITLESCREEN_H
 #define TITLESCREEN_H
-
-#include "TicTacToeGame.h"
 #include <QMainWindow>
+#include "tttcommontypes.h"
 
 namespace Ui {
 class TitleScreen;
@@ -19,10 +18,7 @@ private:
     Ui::TitleScreen *ui;
     void setConnections();
 
-    int boardSize;
-    int miniMaxDepth;
-    bool AIopponent;
-    bool AIstarts;
+    TTTOptions options;
 
 public slots:
     void updateBoardSize(int size);

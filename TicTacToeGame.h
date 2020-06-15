@@ -1,10 +1,11 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "board.h"
+#include "tttcommontypes.h"
 #include <QDialog>
-#include <QPushButton>
 #include <vector>
+
+using std::vector;
 
 namespace Ui {
 class TicTacToeGame;
@@ -14,48 +15,22 @@ class TicTacToeGame : public QDialog {
     Q_OBJECT
 
 public:
-    explicit TicTacToeGame(QWidget *parent = nullptr, int boardSize = 3,
-                           bool AIopponent = true, bool AIstarts = false,
-                           int miniMaxDepth = 3);
+    explicit TicTacToeGame(QWidget *parent = nullptr);
     ~TicTacToeGame();
-
-private: // Types
-    struct Cell {
-        QPushButton *cellBtn = nullptr;
-        int row = -1;
-        int col = -1;
-        Cell(QPushButton *cellBtn, int row, int col)
-            : cellBtn(cellBtn), row(row), col(col) {}
-    };
-
-private: // Data
-    Ui::TicTacToeGame *ui;
-    BoardMarks currentPlayer;
-    Board board;
-    std::vector<Cell> cells;
-    bool AIopponent;
-    bool startWithAI;
-    int miniMaxDepth;
-
-private: // Methods
-    void setConnections();
-    void switchPlayer();
-    QString getCurrentPlayerText();
-    QString getCurrentPlayerStyleSheet();
-    QString getBoardFinalStateText(BoardState boardState);
+    void updateCell(Cell &cell, BoardMarks currentPlayer);
     void declareGameState(BoardState boardState);
-    void updateGameState(Cell &cell);
+    vector<Cell> buildCellButtons(int boardSize);
+    void reset(vector<Cell> &cells);
 
-    void buildCellButtons(int boardSize);
+private:
+    Ui::TicTacToeGame *ui;
+    void setConnections();
+    QString getPlayerText(BoardMarks currentPlayer);
+    QString getPlayerStyleSheet(BoardMarks currentPlayer);
+    QString getBoardFinalStateText(BoardState boardState);
 
 signals:
-    void turnFinished();
-
-public slots:
-    void cellClicked(Cell &cell);
-    void playAIturn();
-    void reset();
-    void backToTitle();
+    void newGame();
 };
 
 #endif // MAINWINDOW_H

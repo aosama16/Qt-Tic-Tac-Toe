@@ -28,12 +28,15 @@ SOURCES += \
     main.cpp \
     TicTacToeGame.cpp \
     board.cpp \
-    titlescreen.cpp
+    titlescreen.cpp \
+    tttcontroller.cpp
 
 HEADERS += \
     TicTacToeGame.h \
     board.h \
-    titlescreen.h
+    titlescreen.h \
+    tttcommontypes.h \
+    tttcontroller.h
 
 FORMS += \
     TicTacToeGame.ui \

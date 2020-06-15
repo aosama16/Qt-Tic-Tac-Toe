@@ -1,9 +1,9 @@
 #include "titlescreen.h"
 #include "ui_titlescreen.h"
+#include "tttcontroller.h"
 
 TitleScreen::TitleScreen(QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::TitleScreen), boardSize(3),
-      miniMaxDepth(3), AIopponent(true), AIstarts(false) {
+    : QMainWindow(parent), ui(new Ui::TitleScreen){
     ui->setupUi(this);
     setConnections();
 }
@@ -20,14 +20,14 @@ void TitleScreen::setConnections() {
 
 void TitleScreen::updateBoardSize(int size) {
     ui->boardSizeValue->setText(QString::number(size));
-    this->boardSize = size;
+    this->options.boardSize = size;
 }
 
 void TitleScreen::updateSinglePlayer(bool checked) {
     if (checked) {
         ui->AIStarts->setEnabled(true);
         ui->miniMaxDepth->setEnabled(true);
-        this->AIopponent = true;
+        this->options.AIopponent = true;
     }
 }
 
@@ -35,28 +35,27 @@ void TitleScreen::updateTwoPlayers(bool checked) {
     if (checked) {
         ui->AIStarts->setEnabled(false);
         ui->miniMaxDepth->setEnabled(false);
-        this->AIopponent = false;
+        this->options.AIopponent = false;
     }
 }
 
 void TitleScreen::updateAIstartsGame(bool checked) {
     if (checked) {
-        this->AIstarts = true;
+        this->options.AIstarts = true;
     } else {
-        this->AIstarts = false;
+        this->options.AIstarts = false;
     }
 }
 
 void TitleScreen::updateMiniMaxDepth(int depth) {
     ui->miniMaxDepthValue->setText(QString::number(depth));
-    this->miniMaxDepth = depth;
+    this->options.miniMaxDepth = depth;
 }
 
 void TitleScreen::startGame() {
     this->hide();
-    TicTacToeGame game(nullptr, this->boardSize, this->AIopponent, this->AIstarts,
-                       this->miniMaxDepth);
-    game.exec();
+    TTTController ttt(this->options);
+    ttt.startGame();
     this->show();
 }
 
