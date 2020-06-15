@@ -3,26 +3,16 @@
 #include <QtGlobal>
 #include <vector>
 
-enum class BoardMarks{
-    Empty,
-    X,
-    O
-};
+enum class BoardMarks { Empty, X, O };
 
-enum class BoardState{
-    NoWinner,
-    XWins,
-    OWins,
-    Tie
-};
+enum class BoardState { NoWinner, XWins, OWins, Tie };
 
 using std::vector;
 
-class Board
-{
+class Board {
 
 private: // Data
-    vector<vector<BoardMarks>>board;
+    vector<vector<BoardMarks>> board;
     int boardSize;
     BoardMarks AImark;
     BoardMarks playerMark;

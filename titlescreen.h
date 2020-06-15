@@ -1,15 +1,14 @@
 #ifndef TITLESCREEN_H
 #define TITLESCREEN_H
 
-#include <QMainWindow>
 #include "TicTacToeGame.h"
+#include <QMainWindow>
 
 namespace Ui {
 class TitleScreen;
 }
 
-class TitleScreen : public QMainWindow
-{
+class TitleScreen : public QMainWindow {
     Q_OBJECT
 
 public:

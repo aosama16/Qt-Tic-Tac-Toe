@@ -1,38 +1,31 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "board.h"
 #include <QDialog>
 #include <QPushButton>
 #include <vector>
-#include "board.h"
 
 namespace Ui {
 class TicTacToeGame;
 }
 
-class TicTacToeGame : public QDialog
-{
+class TicTacToeGame : public QDialog {
     Q_OBJECT
 
 public:
-    explicit TicTacToeGame(QWidget *parent = nullptr,
-                           int boardSize = 3,
-                           bool AIopponent = true,
-                           bool AIstarts = false,
+    explicit TicTacToeGame(QWidget *parent = nullptr, int boardSize = 3,
+                           bool AIopponent = true, bool AIstarts = false,
                            int miniMaxDepth = 3);
     ~TicTacToeGame();
 
 private: // Types
-    struct Cell{
+    struct Cell {
         QPushButton *cellBtn = nullptr;
         int row = -1;
         int col = -1;
-        Cell(QPushButton *cellBtn, int row, int col):
-            cellBtn(cellBtn),
-            row(row),
-            col(col)
-        {}
-
+        Cell(QPushButton *cellBtn, int row, int col)
+            : cellBtn(cellBtn), row(row), col(col) {}
     };
 
 private: // Data
@@ -51,7 +44,7 @@ private: // Methods
     QString getCurrentPlayerStyleSheet();
     QString getBoardFinalStateText(BoardState boardState);
     void declareGameState(BoardState boardState);
-    void updateGameState(Cell& cell);
+    void updateGameState(Cell &cell);
 
     void buildCellButtons(int boardSize);
 

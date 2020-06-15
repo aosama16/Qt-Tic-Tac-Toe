@@ -2,8 +2,7 @@
 #include "titlescreen.h"
 #include <QApplication>
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     qApp->setQuitOnLastWindowClosed(false);
 
     QApplication a(argc, argv);
