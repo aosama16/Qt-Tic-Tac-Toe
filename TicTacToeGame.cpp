@@ -36,6 +36,8 @@ void TicTacToeGame::buildCellButtons(int boardSize) {
             cells.emplace_back(btn, row, col);
         }
     }
+    // Adjusts wnindow size to fit children widgets added dynamically
+    this->adjustSize();
 }
 
 void TicTacToeGame::setConnections() {
