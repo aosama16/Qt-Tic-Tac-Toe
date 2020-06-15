@@ -5,17 +5,21 @@
 
 
 
-TicTacToeGame::TicTacToeGame(QWidget *parent, int boardSize, int miniMaxDepth) :
-    QMainWindow(parent),
+TicTacToeGame::TicTacToeGame(QWidget *parent,
+                             int boardSize,
+                             bool AIopponent,
+                             bool AIstarts,
+                             int miniMaxDepth) :
+    QDialog(parent),
     ui(new Ui::TicTacToeGame),
     board(boardSize),
+    AIopponent(AIopponent),
+    startWithAI(AIstarts),
     miniMaxDepth(miniMaxDepth)
 {
     ui->setupUi(this);
 
     currentPlayer = BoardMarks::X;
-    AIopponent = true;
-    startWithAI = false;
 
     buildCellButtons(boardSize);
 
@@ -57,6 +61,8 @@ void TicTacToeGame::setConnections()
     // Connect AI to play after a cell is chosen by human input
     if(this->AIopponent)
         connect(this, SIGNAL(turnFinished()), this, SLOT(playAIturn()));
+
+    connect(ui->back, SIGNAL(clicked(bool)), SLOT(backToTitle()));
 }
 
 void TicTacToeGame::switchPlayer()
@@ -160,4 +166,9 @@ void TicTacToeGame::reset()
 
     if(this->AIopponent && this->startWithAI)
         playAIturn();
+}
+
+void TicTacToeGame::backToTitle()
+{
+    this->close();
 }

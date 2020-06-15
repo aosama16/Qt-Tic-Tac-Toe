@@ -1,7 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
+#include <QDialog>
 #include <QPushButton>
 #include <vector>
 #include "board.h"
@@ -10,12 +10,16 @@ namespace Ui {
 class TicTacToeGame;
 }
 
-class TicTacToeGame : public QMainWindow
+class TicTacToeGame : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit TicTacToeGame(QWidget *parent = nullptr, int boardSize = 3, int miniMaxDepth = 3);
+    explicit TicTacToeGame(QWidget *parent = nullptr,
+                           int boardSize = 3,
+                           bool AIopponent = true,
+                           bool AIstarts = false,
+                           int miniMaxDepth = 3);
     ~TicTacToeGame();
 
 private: // Types
@@ -36,9 +40,9 @@ private: // Data
     BoardMarks currentPlayer;
     Board board;
     std::vector<Cell> cells;
-    int miniMaxDepth;
     bool AIopponent;
     bool startWithAI;
+    int miniMaxDepth;
 
 private: // Methods
     void setConnections();
@@ -58,6 +62,7 @@ public slots:
     void cellClicked(Cell &cell);
     void playAIturn();
     void reset();
+    void backToTitle();
 };
 
 #endif // MAINWINDOW_H

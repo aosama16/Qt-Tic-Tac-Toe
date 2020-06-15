@@ -25,16 +25,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
-        main.cpp \
+    main.cpp \
     TicTacToeGame.cpp \
-    board.cpp
+    board.cpp \
+    titlescreen.cpp
 
 HEADERS += \
     TicTacToeGame.h \
-    board.h
+    board.h \
+    titlescreen.h
 
 FORMS += \
-        TicTacToeGame.ui
+    TicTacToeGame.ui \
+    titlescreen.ui
 
 RC_ICONS = images/icon.ico
 
@@ -42,3 +45,6 @@ RC_ICONS = images/icon.ico
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    recources.qrc
