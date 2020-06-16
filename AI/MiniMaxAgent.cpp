@@ -3,10 +3,10 @@
 #include <QPair>
 #include <limits.h>
 
-MiniMaxAgent::MiniMaxAgent(int depth)
-    : depth(depth), AImark(BoardMarks::Empty), playerMark(BoardMarks::Empty) {}
+MiniMaxAgent::MiniMaxAgent(int depth, BoardMarks AImark, BoardMarks playerMark)
+    : depth(depth), AImark(AImark), playerMark(playerMark) {}
 
-int MiniMaxAgent::maxMove(Board &board, int depth, int alpha, int beta) {
+int MiniMaxAgent::maxMove(Board &board, int depth, int alpha, int beta) const {
     // if game over return score
     BoardState state = board.evaluateBoard();
     if (depth == 0 || state != BoardState::NoWinner)
@@ -35,7 +35,7 @@ int MiniMaxAgent::maxMove(Board &board, int depth, int alpha, int beta) {
     return bestScore;
 }
 
-int MiniMaxAgent::minMove(Board &board, int depth, int alpha, int beta) {
+int MiniMaxAgent::minMove(Board &board, int depth, int alpha, int beta) const {
     // if game over return score
     BoardState state = board.evaluateBoard();
     if (depth == 0 || state != BoardState::NoWinner)
@@ -64,7 +64,7 @@ int MiniMaxAgent::minMove(Board &board, int depth, int alpha, int beta) {
     return bestScore;
 }
 
-int MiniMaxAgent::score(BoardState state) {
+int MiniMaxAgent::score(const BoardState state) const {
     if (this->AImark == BoardMarks::O && state == BoardState::OWins)
         return 1;
     else if (this->AImark == BoardMarks::X && state == BoardState::XWins)
@@ -77,15 +77,9 @@ int MiniMaxAgent::score(BoardState state) {
         return 0;
 }
 
-int MiniMaxAgent::play(Board &board, BoardMarks mark) {
+int MiniMaxAgent::play(Board &board) {
     if (board.evaluateBoard() != BoardState::NoWinner)
         return -1;
-
-    if (this->AImark == BoardMarks::Empty) {
-        this->AImark = mark;
-        this->playerMark =
-            (this->AImark == BoardMarks::O ? BoardMarks::X : BoardMarks::O);
-    }
 
     int bestScore = INT_MIN;
     QPair<int, int> bestEntry;
@@ -110,9 +104,4 @@ int MiniMaxAgent::play(Board &board, BoardMarks mark) {
 
     board.setPlayerInput(bestEntry.first, bestEntry.second, this->AImark);
     return bestEntry.first * board.size() + bestEntry.second;
-}
-
-void MiniMaxAgent::reset() {
-    AImark = BoardMarks::Empty;
-    playerMark = BoardMarks::Empty;
 }

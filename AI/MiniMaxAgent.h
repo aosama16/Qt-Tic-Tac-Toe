@@ -6,17 +6,16 @@
 class MiniMaxAgent final : public AIAgent
 {
 public:
-    MiniMaxAgent(int depth);
+    MiniMaxAgent(int depth, BoardMarks AImark, BoardMarks playerMark);
 
 private:
-    int depth;
-    BoardMarks AImark;
-    BoardMarks playerMark;
-    int maxMove(Board &board, int depth, int alpha, int beta);
-    int minMove(Board &board, int depth, int alpha, int beta);
-    int score(BoardState state);
-    int play(Board &board, BoardMarks mark) override;
-    void reset() override;
+    const int depth;
+    const BoardMarks AImark;
+    const BoardMarks playerMark;
+    int maxMove(Board &board, int depth, int alpha, int beta) const;
+    int minMove(Board &board, int depth, int alpha, int beta) const;
+    int score(const BoardState state) const;
+    int play(Board &board) override;
 };
 
 #endif // MINIMAXAGENT_H

@@ -7,11 +7,17 @@
 TTTController::TTTController(TTTOptions &options, QObject *parent)
     : QObject(parent), view(), board(options.boardSize), options(options),
       currentPlayer(BoardMarks::X) {
+    // Build GUI
     cells = view.buildCellButtons(options.boardSize);
+
+    // Set Connections to the UI elements
     setConnections();
 
-    if (this->options.AIopponent)
-        agent = std::make_unique<MiniMaxAgent>(this->options.miniMaxDepth);
+    // specifies the type of agent, and it's behaviour throught polymorphism
+    if (this->options.AIopponent && this->options.AIstarts)
+        agent = std::make_unique<MiniMaxAgent>(this->options.miniMaxDepth, BoardMarks::X, BoardMarks::O);
+    else if (this->options.AIopponent)
+        agent = std::make_unique<MiniMaxAgent>(this->options.miniMaxDepth, BoardMarks::O, BoardMarks::X);
     else
         agent = std::make_unique<NoAgent>();
 
@@ -30,7 +36,7 @@ void TTTController::setConnections() {
     connect(&view, &TicTacToeGame::newGame, this, [&] { reset(); });
 
     // Connect AI to play after a cell is chosen by human input
-    connect(this, &turnFinished, [=] { AIAgentPlay(); });
+    connect(this, &TTTController::turnFinished, [=] { AIAgentPlay(); });
 }
 
 void TTTController::updateGameState(Cell &cell) {
@@ -62,7 +68,7 @@ void TTTController::reset() {
 }
 
 void TTTController::AIAgentPlay() {
-    int cellIdx = agent->play(this->board, this->currentPlayer);
+    int cellIdx = agent->play(this->board);
     if (cellIdx != -1)
         updateGameState(cells.at(cellIdx));
 }

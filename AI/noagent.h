@@ -8,11 +8,9 @@ public:
     NoAgent() {}
     ~NoAgent() {}
 
-    int play(Board& board, BoardMarks mark) override {
+    int play(Board& board) override {
         Q_UNUSED(board);
-        Q_UNUSED(mark);
         return -1;
     }
-    void reset() override {}
 };
 #endif // NOAGENT_H
