@@ -9,13 +9,13 @@ MiniMaxAgent::MiniMaxAgent(int depth, BoardMarks AImark, BoardMarks playerMark)
 int MiniMaxAgent::maxMove(Board &board, int depth, int alpha, int beta) const {
     // if game over return score
     BoardState state = board.evaluateBoard();
-    if (depth == 0 || state != BoardState::NoWinner)
+    if ( (0 == depth) || (BoardState::NoWinner != state) )
         return score(state);
 
     int bestScore = INT_MIN;
     for (int row = 0; row < board.size(); ++row) {
         for (int col = 0; col < board.size(); ++col) {
-            if (board.at(row, col) == BoardMarks::Empty) {
+            if (BoardMarks::Empty == board.at(row, col)) {
                 // Try the move
                 board.setPlayerInput(row, col, this->AImark);
 
@@ -38,13 +38,13 @@ int MiniMaxAgent::maxMove(Board &board, int depth, int alpha, int beta) const {
 int MiniMaxAgent::minMove(Board &board, int depth, int alpha, int beta) const {
     // if game over return score
     BoardState state = board.evaluateBoard();
-    if (depth == 0 || state != BoardState::NoWinner)
+    if ( (0 == depth) || (BoardState::NoWinner != state) )
         return score(state);
 
     int bestScore = INT_MAX;
     for (int row = 0; row < board.size(); ++row) {
         for (int col = 0; col < board.size(); ++col) {
-            if (board.at(row, col) == BoardMarks::Empty) {
+            if (BoardMarks::Empty == board.at(row, col)) {
                 // Try the move
                 board.setPlayerInput(row, col, playerMark);
 
@@ -65,27 +65,27 @@ int MiniMaxAgent::minMove(Board &board, int depth, int alpha, int beta) const {
 }
 
 int MiniMaxAgent::score(const BoardState state) const {
-    if (this->AImark == BoardMarks::O && state == BoardState::OWins)
+    if ( (BoardMarks::O == this->AImark) && (BoardState::OWins == state) )
         return 1;
-    else if (this->AImark == BoardMarks::X && state == BoardState::XWins)
+    else if ( (BoardMarks::X == this->AImark) && (BoardState::XWins == state) )
         return 1;
-    else if (this->AImark == BoardMarks::O && state == BoardState::XWins)
+    else if ( (BoardMarks::O == this->AImark) && (BoardState::XWins == state) )
         return -1;
-    else if (this->AImark == BoardMarks::X && state == BoardState::OWins)
+    else if ( (BoardMarks::X == this->AImark) && (BoardState::OWins == state) )
         return -1;
     else
         return 0;
 }
 
 int MiniMaxAgent::play(Board &board) {
-    if (board.evaluateBoard() != BoardState::NoWinner)
+    if (BoardState::NoWinner != board.evaluateBoard())
         return -1;
 
     int bestScore = INT_MIN;
     QPair<int, int> bestEntry;
     for (int row = 0; row < board.size(); ++row) {
         for (int col = 0; col < board.size(); ++col) {
-            if (board.at(row, col) == BoardMarks::Empty) {
+            if (BoardMarks::Empty == board.at(row, col)) {
                 // Try the move
                 board.setPlayerInput(row, col, AImark);
 

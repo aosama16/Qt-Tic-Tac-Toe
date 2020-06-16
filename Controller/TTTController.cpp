@@ -48,7 +48,7 @@ void TTTController::updateGameState(Cell &cell) {
 #endif
     // Update board state and declare state if its a final state
     BoardState boardState = board.evaluateBoard();
-    if (boardState != BoardState::NoWinner)
+    if (BoardState::NoWinner != boardState)
         this->view.declareGameState(boardState);
 
     // Switch the players
@@ -69,14 +69,14 @@ void TTTController::reset() {
 
 void TTTController::AIAgentPlay() {
     int cellIdx = agent->play(this->board);
-    if (cellIdx != -1)
+    if (-1 != cellIdx)
         updateGameState(cells.at(cellIdx));
 }
 
 void TTTController::switchPlayer() {
-    if (this->currentPlayer == BoardMarks::X)
+    if (BoardMarks::X == this->currentPlayer)
         this->currentPlayer = BoardMarks::O;
-    else if (this->currentPlayer == BoardMarks::O)
+    else if (BoardMarks::O == this->currentPlayer)
         this->currentPlayer = BoardMarks::X;
 }
 

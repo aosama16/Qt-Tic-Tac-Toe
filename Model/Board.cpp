@@ -28,7 +28,7 @@ void Board::printBoard() const {
 
 bool Board::setPlayerInput(int row, int col, BoardMarks currentPlayer) {
     // The game is over, so no input is allowed untill game resets.
-    if (evaluateBoard() != BoardState::NoWinner)
+    if (BoardState::NoWinner != evaluateBoard())
         return false;
 
     // Row input in not valid.
@@ -40,7 +40,7 @@ bool Board::setPlayerInput(int row, int col, BoardMarks currentPlayer) {
         return false;
 
     // Cell is not empty.
-    if (board[row][col] != BoardMarks::Empty)
+    if (BoardMarks::Empty != board[row][col])
         return false;
 
     // Update cell with current player's mark.
@@ -76,9 +76,9 @@ BoardState Board::evaluateBoard() const {
                 equalRow = false;
         }
         if (equalRow) {
-            if (ref == BoardMarks::X)
+            if (BoardMarks::X == ref)
                 return BoardState::XWins;
-            if (ref == BoardMarks::O)
+            if (BoardMarks::O == ref)
                 return BoardState::OWins;
         }
     }
@@ -92,9 +92,9 @@ BoardState Board::evaluateBoard() const {
                 equalCol = false;
         }
         if (equalCol) {
-            if (ref == BoardMarks::X)
+            if (BoardMarks::X == ref)
                 return BoardState::XWins;
-            else if (ref == BoardMarks::O)
+            if (BoardMarks::O == ref)
                 return BoardState::OWins;
         }
     }
@@ -107,9 +107,9 @@ BoardState Board::evaluateBoard() const {
             equalDiagonal = false;
     }
     if (equalDiagonal) {
-        if (ref == BoardMarks::X)
+        if (BoardMarks::X == ref)
             return BoardState::XWins;
-        else if (ref == BoardMarks::O)
+        if (BoardMarks::O == ref)
             return BoardState::OWins;
     }
 
@@ -122,9 +122,9 @@ BoardState Board::evaluateBoard() const {
             equalDiagonal = false;
     }
     if (equalDiagonal) {
-        if (ref == BoardMarks::X)
+        if (BoardMarks::X == ref)
             return BoardState::XWins;
-        else if (ref == BoardMarks::O)
+        if (BoardMarks::O == ref)
             return BoardState::OWins;
     }
 
@@ -132,7 +132,7 @@ BoardState Board::evaluateBoard() const {
     // still ongoing.
     for (int row = 0; row < this->boardSize; ++row)
         for (int col = 0; col < this->boardSize; ++col)
-            if (board[row][col] == BoardMarks::Empty)
+            if (BoardMarks::Empty == board[row][col])
                 return BoardState::NoWinner;
 
     // If no winner is determined and there are no empty cells, then the game is a
