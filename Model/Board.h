@@ -19,6 +19,7 @@ public:
     BoardMarks at(int row, int col);
     void reset();
     int size();
+    virtual bool resetCell(int row, int col);
 #ifdef QT_DEBUG
     void printBoard();
 #endif

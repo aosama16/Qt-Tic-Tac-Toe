@@ -44,7 +44,22 @@ bool Board::setPlayerInput(int row, int col, BoardMarks currentPlayer) {
     return true;
 }
 
-BoardMarks Board::at(int row, int col) { return board.at(row).at(col); }
+bool Board::resetCell(int row, int col) {
+    // Row input in not valid.
+    if (row >= this->boardSize || row < 0)
+        return false;
+
+    // Column input is not valid.
+    if (col >= this->boardSize || col < 0)
+        return false;
+
+    // Reset Cell
+    this->board[row][col] = BoardMarks::Empty;
+
+    return true;
+}
+
+BoardMarks Board::at(int row, int col) const { return board.at(row).at(col); }
 
 BoardState Board::evaluateBoard() {
     // Checks rows for a win for the current player.

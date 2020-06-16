@@ -23,7 +23,7 @@ int MiniMaxAgent::maxMove(Board &board, int depth, int alpha, int beta) {
                 int score = minMove(board, depth - 1, alpha, beta);
 
                 // Reset the move done
-                board.setPlayerInput(row, col, BoardMarks::Empty);
+                board.resetCell(row, col);
 
                 bestScore = std::max(bestScore, score);
                 alpha = std::max(alpha, score);
@@ -52,7 +52,7 @@ int MiniMaxAgent::minMove(Board &board, int depth, int alpha, int beta) {
                 int score = maxMove(board, depth - 1, alpha, beta);
 
                 // Reset the move done
-                board.setPlayerInput(row, col, BoardMarks::Empty);
+                board.resetCell(row, col);
 
                 bestScore = std::min(bestScore, score);
                 beta = std::min(beta, score);
@@ -103,7 +103,7 @@ int MiniMaxAgent::play(Board &board, BoardMarks mark) {
                 }
 
                 // Reset the move done
-                board.setPlayerInput(row, col, BoardMarks::Empty);
+                board.resetCell(row, col);
             }
         }
     }
