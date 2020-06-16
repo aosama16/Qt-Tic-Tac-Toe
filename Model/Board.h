@@ -8,7 +8,7 @@ using std::vector;
 
 class Board {
 
-private: // Data
+protected: // Data
     vector<vector<BoardMarks>> board;
     const int boardSize;
 
