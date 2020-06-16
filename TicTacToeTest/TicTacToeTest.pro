@@ -12,7 +12,8 @@ CONFIG += thread
 CONFIG += qt
 
 HEADERS += \
-    tst_board.h
+    tst_board.h \
+    tst_minimaxagent.h
 
 SOURCES += \
         main.cpp

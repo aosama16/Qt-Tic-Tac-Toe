@@ -1,4 +1,5 @@
 #include "tst_board.h"
+#include "tst_minimaxagent.h"
 
 #include <gtest/gtest.h>
 
