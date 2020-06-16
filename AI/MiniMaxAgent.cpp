@@ -17,13 +17,13 @@ int MiniMaxAgent::maxMove(Board &board, int depth, int alpha, int beta) {
         for (int col = 0; col < board.size(); ++col) {
             if (board.at(row, col) == BoardMarks::Empty) {
                 // Try the move
-                board.set(row, col, this->AImark);
+                board.setPlayerInput(row, col, this->AImark);
 
                 // Compare result of this move with respect to AI
                 int score = minMove(board, depth - 1, alpha, beta);
 
                 // Reset the move done
-                board.set(row, col, BoardMarks::Empty);
+                board.setPlayerInput(row, col, BoardMarks::Empty);
 
                 bestScore = std::max(bestScore, score);
                 alpha = std::max(alpha, score);
@@ -46,13 +46,13 @@ int MiniMaxAgent::minMove(Board &board, int depth, int alpha, int beta) {
         for (int col = 0; col < board.size(); ++col) {
             if (board.at(row, col) == BoardMarks::Empty) {
                 // Try the move
-                board.set(row, col, playerMark);
+                board.setPlayerInput(row, col, playerMark);
 
                 // Compare result of this move with respect to player
                 int score = maxMove(board, depth - 1, alpha, beta);
 
                 // Reset the move done
-                board.set(row, col, BoardMarks::Empty);
+                board.setPlayerInput(row, col, BoardMarks::Empty);
 
                 bestScore = std::min(bestScore, score);
                 beta = std::min(beta, score);
@@ -93,7 +93,7 @@ int MiniMaxAgent::play(Board &board, BoardMarks mark) {
         for (int col = 0; col < board.size(); ++col) {
             if (board.at(row, col) == BoardMarks::Empty) {
                 // Try the move
-                board.set(row, col, AImark);
+                board.setPlayerInput(row, col, AImark);
 
                 int moveScore = minMove(board, this->depth - 1, INT_MIN, INT_MAX);
                 if (moveScore > bestScore) {
@@ -103,12 +103,12 @@ int MiniMaxAgent::play(Board &board, BoardMarks mark) {
                 }
 
                 // Reset the move done
-                board.set(row, col, BoardMarks::Empty);
+                board.setPlayerInput(row, col, BoardMarks::Empty);
             }
         }
     }
 
-    board.set(bestEntry.first, bestEntry.second, this->AImark);
+    board.setPlayerInput(bestEntry.first, bestEntry.second, this->AImark);
     return bestEntry.first * board.size() + bestEntry.second;
 }
 

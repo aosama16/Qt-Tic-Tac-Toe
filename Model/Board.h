@@ -17,7 +17,6 @@ public:
     BoardState evaluateBoard();
     bool setPlayerInput(int row, int col, BoardMarks currentPlayer);
     BoardMarks at(int row, int col);
-    void set(int row, int col, BoardMarks mark);
     void reset();
     int size();
 #ifdef QT_DEBUG
