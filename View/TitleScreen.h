@@ -7,7 +7,7 @@ namespace Ui {
 class TitleScreen;
 }
 
-class TitleScreen : public QMainWindow {
+class TitleScreen final : public QMainWindow {
     Q_OBJECT
 
 public:
