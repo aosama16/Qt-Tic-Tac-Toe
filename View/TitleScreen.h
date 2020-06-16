@@ -19,6 +19,8 @@ private:
     void setConnections();
 
     TTTOptions options;
+    // QWidget interface
+    void closeEvent(QCloseEvent *event) override;
 
 public slots:
     void updateBoardSize(int size);
@@ -28,9 +30,6 @@ public slots:
     void updateMiniMaxDepth(int depth);
     void startGame();
 
-    // QWidget interface
-protected:
-    void closeEvent(QCloseEvent *event) override;
 
 signals:
     void exited();
