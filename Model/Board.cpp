@@ -8,8 +8,13 @@ Board::Board(int size)
     : board(size, vector<BoardMarks>(size, BoardMarks::Empty)),
       boardSize(size) {}
 
+Board::~Board()
+{
+
+}
+
 #ifdef QT_DEBUG
-void Board::printBoard() {
+void Board::printBoard() const {
     QString board;
     for (int row = 0; row < this->boardSize; ++row) {
         for (int col = 0; col < this->boardSize; ++col) {
@@ -61,7 +66,7 @@ bool Board::resetCell(int row, int col) {
 
 BoardMarks Board::at(int row, int col) const { return board.at(row).at(col); }
 
-BoardState Board::evaluateBoard() {
+BoardState Board::evaluateBoard() const {
     // Checks rows for a win for the current player.
     for (int row = 0; row < this->boardSize; ++row) {
         bool equalRow = true;
@@ -144,4 +149,4 @@ void Board::reset() {
     }
 }
 
-int Board::size() { return this->boardSize; }
+int Board::size() const { return this->boardSize; }

@@ -33,6 +33,7 @@ vector<Cell> TicTacToeGame::buildCellButtons(int boardSize) {
     // Adjusts wnindow size to fit children widgets added dynamically
     this->adjustSize();
 
+    // Return by value to allow for RVO (Copy Ellision)
     return cells;
 }
 

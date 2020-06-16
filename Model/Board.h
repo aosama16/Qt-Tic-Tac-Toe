@@ -10,18 +10,19 @@ class Board {
 
 private: // Data
     vector<vector<BoardMarks>> board;
-    int boardSize;
+    const int boardSize;
 
 public:
     Board(int size);
-    BoardState evaluateBoard();
-    bool setPlayerInput(int row, int col, BoardMarks currentPlayer);
-    BoardMarks at(int row, int col);
-    void reset();
-    int size();
+    virtual ~Board();
+    virtual BoardState evaluateBoard() const;
+    virtual bool setPlayerInput(int row, int col, BoardMarks currentPlayer);
+    virtual BoardMarks at(int row, int col) const;
+    virtual void reset();
     virtual bool resetCell(int row, int col);
+    int size() const;
 #ifdef QT_DEBUG
-    void printBoard();
+    virtual void printBoard () const;
 #endif
 };
 
