@@ -13,6 +13,11 @@ private:
     const int depth;
     const BoardMarks AImark;
     const BoardMarks playerMark;
+
+    static constexpr short AI_WIN_SCORE = 1;
+    static constexpr short PLAYER_WIN_SCORE = -1;
+    static constexpr short TIE_SCORE = 1;
+
     int maxMove(Board &board, int depth, int alpha, int beta) const;
     int minMove(Board &board, int depth, int alpha, int beta) const;
     int score(const BoardState state) const;

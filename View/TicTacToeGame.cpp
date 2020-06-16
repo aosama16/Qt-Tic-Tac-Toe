@@ -25,7 +25,7 @@ vector<Cell> TicTacToeGame::buildCellButtons(int boardSize) {
             // Add buttons to gridLayout
             QPushButton *btn = new QPushButton();
             btn->setProperty("cell", true);
-            ui->gridBoard->addWidget(btn, row, col, 1, 1);
+            ui->gridBoard->addWidget(btn, row, col, defaults::GUI_CELL_ROW_SPAN, defaults::GUI_CELL_COLUMN_SPAN);
             // Reference to cells
             cells.emplace_back(btn, row, col);
         }
@@ -53,13 +53,13 @@ QString TicTacToeGame::getPlayerStyleSheet(BoardMarks currentPlayer) {
 
     switch (currentPlayer) {
     case BoardMarks::O:
-        color = "#FF5722";
+        color = defaults::O_COLOR;
         break;
     case BoardMarks::X:
-        color = "#455A64";
+        color = defaults::X_COLOR;
         break;
     default:
-        return "#FFF";
+        return defaults::DEFAULT_COLOR;
     }
 
     return QString("font: 50px \"Verdana\";"

@@ -69,7 +69,7 @@ void TTTController::reset() {
 
 void TTTController::AIAgentPlay() {
     int cellIdx = agent->play(this->board);
-    if (-1 != cellIdx)
+    if (defaults::INVALID_CELL != cellIdx)
         updateGameState(cells.at(cellIdx));
 }
 

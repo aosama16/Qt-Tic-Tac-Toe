@@ -66,20 +66,20 @@ int MiniMaxAgent::minMove(Board &board, int depth, int alpha, int beta) const {
 
 int MiniMaxAgent::score(const BoardState state) const {
     if ( (BoardMarks::O == this->AImark) && (BoardState::OWins == state) )
-        return 1;
+        return AI_WIN_SCORE;
     else if ( (BoardMarks::X == this->AImark) && (BoardState::XWins == state) )
-        return 1;
+        return AI_WIN_SCORE;
     else if ( (BoardMarks::O == this->AImark) && (BoardState::XWins == state) )
-        return -1;
+        return PLAYER_WIN_SCORE;
     else if ( (BoardMarks::X == this->AImark) && (BoardState::OWins == state) )
-        return -1;
+        return PLAYER_WIN_SCORE;
     else
-        return 0;
+        return TIE_SCORE;
 }
 
 int MiniMaxAgent::play(Board &board) {
     if (BoardState::NoWinner != board.evaluateBoard())
-        return -1;
+        return defaults::INVALID_CELL;
 
     int bestScore = INT_MIN;
     QPair<int, int> bestEntry;

@@ -1,6 +1,7 @@
 #ifndef NOAGENT_H
 #define NOAGENT_H
 #include "AIAgent.h"
+#include "TTTCommonTypes.h"
 #include <qglobal.h>
 
 class NoAgent final : public AIAgent{
@@ -10,7 +11,7 @@ public:
 
     int play(Board& board) override {
         Q_UNUSED(board);
-        return -1;
+        return defaults::INVALID_CELL;
     }
 };
 #endif // NOAGENT_H
