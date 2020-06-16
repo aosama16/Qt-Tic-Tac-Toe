@@ -13,35 +13,36 @@ using std::vector;
 
 class TTTController : public QObject {
     Q_OBJECT
-private:
+protected:
     // View
     TicTacToeGame view;
     // Model
     Board board;
-
     // Cells built by the view
     vector<Cell> cells;
     // Game Logic Variables
-    TTTOptions options;
+    const TTTOptions& options;
     BoardMarks currentPlayer;
     unique_ptr<AIAgent> agent;
 
 private: // Methods
     void setConnections();
-    void updateGameState(Cell &cell);
     void reset();
-    void AIAgentPlay();
-    void switchPlayer();
+
+protected: // Methods
+    virtual void updateGameState(Cell &cell);
+    virtual void AIAgentPlay();
+    virtual void switchPlayer();
 
 public:
-    explicit TTTController(TTTOptions &options, QObject *parent = nullptr);
-    void startGame();
+    explicit TTTController(const TTTOptions &options, QObject *parent = nullptr);
+    virtual void startGame();
 
 signals:
     void turnFinished();
 
 public slots:
-    void updateGame(Cell &cell);
+    virtual void updateGame(Cell &cell);
 };
 
 #endif // TTTCONTROLLER_H

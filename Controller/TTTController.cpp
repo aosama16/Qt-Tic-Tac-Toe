@@ -4,7 +4,7 @@
 #include "TicTacToeGame.h"
 #include <QPushButton>
 
-TTTController::TTTController(TTTOptions &options, QObject *parent)
+TTTController::TTTController(const TTTOptions &options, QObject *parent)
     : QObject(parent), view(), board(options.boardSize), options(options),
       currentPlayer(BoardMarks::X) {
     // Build GUI
