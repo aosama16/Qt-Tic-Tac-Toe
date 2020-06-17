@@ -4,20 +4,26 @@
 #include <QPushButton>
 
 TicTacToeGame::TicTacToeGame(QWidget *parent)
-    : QDialog(parent), ui(new Ui::TicTacToeGame) {
+    : QDialog(parent), ui(new Ui::TicTacToeGame)
+{
     ui->setupUi(this);
     setConnections();
 }
 
-TicTacToeGame::~TicTacToeGame() { delete ui; }
-
-void TicTacToeGame::setConnections() {
-    // New Game Connection - resetting the game
-    connect(ui->reset, &QPushButton::clicked, [=] { emit newGame(); });
-    connect(ui->back, &QPushButton::clicked, [=] { this->close(); });
+TicTacToeGame::~TicTacToeGame()
+{
+    delete ui;
 }
 
-vector<Cell> TicTacToeGame::buildCellButtons(int boardSize) {
+void TicTacToeGame::setConnections()
+{
+    // New Game Connection - resetting the game
+    connect(ui->reset, &QPushButton::clicked, [=] { emit newGame(); });
+    connect(ui->back, &QPushButton::clicked, [=] { close(); });
+}
+
+vector<Cell> TicTacToeGame::buildCellButtons(int boardSize)
+{
     vector<Cell> cells;
     cells.reserve(boardSize * boardSize);
     for (int row = 0; row < boardSize; ++row) {
@@ -31,13 +37,14 @@ vector<Cell> TicTacToeGame::buildCellButtons(int boardSize) {
         }
     }
     // Adjusts wnindow size to fit children widgets added dynamically
-    this->adjustSize();
+    adjustSize();
 
     // Return by value to allow for RVO (Copy Ellision)
     return cells;
 }
 
-QString TicTacToeGame::getPlayerText(BoardMarks currentPlayer) {
+QString TicTacToeGame::getPlayerText(BoardMarks currentPlayer)
+{
     switch (currentPlayer) {
     case BoardMarks::O:
         return "O";
@@ -48,7 +55,8 @@ QString TicTacToeGame::getPlayerText(BoardMarks currentPlayer) {
     }
 }
 
-QString TicTacToeGame::getPlayerStyleSheet(BoardMarks currentPlayer) {
+QString TicTacToeGame::getPlayerStyleSheet(BoardMarks currentPlayer)
+{
     QString color;
 
     switch (currentPlayer) {
@@ -59,7 +67,8 @@ QString TicTacToeGame::getPlayerStyleSheet(BoardMarks currentPlayer) {
         color = defaults::X_COLOR;
         break;
     default:
-        return defaults::DEFAULT_COLOR;
+        color = defaults::DEFAULT_COLOR;
+        break;
     }
 
     return QString("font: 50px \"Verdana\";"
@@ -71,13 +80,15 @@ QString TicTacToeGame::getPlayerStyleSheet(BoardMarks currentPlayer) {
         .arg(color);
 }
 
-void TicTacToeGame::updateCell(Cell &cell, BoardMarks currentPlayer) {
+void TicTacToeGame::updateCell(Cell &cell, BoardMarks currentPlayer)
+{
     // Update Cell button in GUI
     cell.cellBtn->setStyleSheet(getPlayerStyleSheet(currentPlayer));
     cell.cellBtn->setText(getPlayerText(currentPlayer));
 }
 
-QString TicTacToeGame::getBoardFinalStateText(BoardState boardState) {
+QString TicTacToeGame::getBoardFinalStateText(BoardState boardState)
+{
     switch (boardState) {
     case BoardState::XWins:
         return "player X wins!";
@@ -90,14 +101,16 @@ QString TicTacToeGame::getBoardFinalStateText(BoardState boardState) {
     }
 }
 
-void TicTacToeGame::declareGameState(BoardState boardState) {
+void TicTacToeGame::declareGameState(BoardState boardState)
+{
     QMessageBox resultBox;
     resultBox.setWindowTitle("Game Result");
     resultBox.setText("Game over, " + getBoardFinalStateText(boardState));
     resultBox.exec();
 }
 
-void TicTacToeGame::reset(vector<Cell> &cells) {
+void TicTacToeGame::reset(vector<Cell> &cells)
+{
     // Resets the GUI cells to an empty button with no text marks.
     for (auto &cell : cells)
         cell.cellBtn->setText("");

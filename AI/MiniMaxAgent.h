@@ -6,13 +6,13 @@
 class MiniMaxAgent final : public AIAgent
 {
 public:
-    MiniMaxAgent(int depth, BoardMarks AImark, BoardMarks playerMark);
+    MiniMaxAgent(unsigned short depth, BoardMarks AImark, BoardMarks playerMark);
     int play(Board &board) override;
 
 private:
-    const int depth;
-    const BoardMarks AImark;
-    const BoardMarks playerMark;
+    const unsigned short depth_;
+    const BoardMarks AImark_;
+    const BoardMarks playerMark_;
 
     static constexpr short AI_WIN_SCORE = 1;
     static constexpr short PLAYER_WIN_SCORE = -1;

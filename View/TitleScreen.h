@@ -7,7 +7,8 @@ namespace Ui {
 class TitleScreen;
 }
 
-class TitleScreen final : public QMainWindow {
+class TitleScreen final : public QMainWindow
+{
     Q_OBJECT
 
 public:
@@ -18,7 +19,7 @@ private:
     Ui::TitleScreen *ui;
     void setConnections();
 
-    TTTOptions options;
+    TTTOptions options_;
     // QWidget interface
     void closeEvent(QCloseEvent *event) override;
 

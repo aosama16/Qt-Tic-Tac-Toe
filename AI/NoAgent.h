@@ -4,7 +4,8 @@
 #include "TTTCommonTypes.h"
 #include <qglobal.h>
 
-class NoAgent final : public AIAgent{
+class NoAgent final : public AIAgent
+{
 public:
     NoAgent() {}
     ~NoAgent() {}

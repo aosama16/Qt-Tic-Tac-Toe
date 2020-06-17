@@ -4,9 +4,9 @@
 #include <QDebug>
 #endif
 
-Board::Board(int size)
-    : board(size, vector<BoardMarks>(size, BoardMarks::Empty)),
-      boardSize(size) {}
+Board::Board(size_t size)
+    : board_(size, vector<BoardMarks>(size, BoardMarks::Empty)),
+      boardSize_(size) {}
 
 Board::~Board()
 {
@@ -14,11 +14,12 @@ Board::~Board()
 }
 
 #ifdef QT_DEBUG
-void Board::printBoard() const {
+void Board::printBoard() const
+{
     QString board;
-    for (int row = 0; row < this->boardSize; ++row) {
-        for (int col = 0; col < this->boardSize; ++col) {
-            board += QString::number(static_cast<int>(this->board[row][col]));
+    for (size_t row = 0; row < boardSize_; ++row) {
+        for (size_t col = 0; col < boardSize_; ++col) {
+            board += QString::number(static_cast<int>(board_[row][col]));
         }
         board += '\n';
     }
@@ -26,53 +27,59 @@ void Board::printBoard() const {
 }
 #endif
 
-bool Board::setPlayerInput(int row, int col, BoardMarks currentPlayer) {
+bool Board::setPlayerInput(size_t row, size_t col, BoardMarks currentPlayer)
+{
     // The game is over, so no input is allowed untill game resets.
     if (BoardState::NoWinner != evaluateBoard())
         return false;
 
     // Row input in not valid.
-    if (row >= this->boardSize || row < 0)
+    if (row >= boardSize_)
         return false;
 
     // Column input is not valid.
-    if (col >= this->boardSize || col < 0)
+    if (col >= boardSize_)
         return false;
 
     // Cell is not empty.
-    if (BoardMarks::Empty != board[row][col])
+    if (BoardMarks::Empty != board_[row][col])
         return false;
 
     // Update cell with current player's mark.
-    this->board[row][col] = currentPlayer;
+    board_[row][col] = currentPlayer;
 
     return true;
 }
 
-bool Board::resetCell(int row, int col) {
+bool Board::resetCell(size_t row, size_t col)
+{
     // Row input in not valid.
-    if (row >= this->boardSize || row < 0)
+    if (row >= boardSize_)
         return false;
 
     // Column input is not valid.
-    if (col >= this->boardSize || col < 0)
+    if (col >= boardSize_)
         return false;
 
     // Reset Cell
-    this->board[row][col] = BoardMarks::Empty;
+    board_[row][col] = BoardMarks::Empty;
 
     return true;
 }
 
-BoardMarks Board::at(int row, int col) const { return board.at(row).at(col); }
+BoardMarks Board::at(size_t row, size_t col) const
+{
+    return board_.at(row).at(col);
+}
 
-BoardState Board::evaluateBoard() const {
+BoardState Board::evaluateBoard() const
+{
     // Checks rows for a win for the current player.
-    for (int row = 0; row < this->boardSize; ++row) {
+    for (size_t row = 0; row < boardSize_; ++row) {
         bool equalRow = true;
-        BoardMarks ref = board[row][0];
-        for (int col = 1; col < this->boardSize; ++col) {
-            if (board[row][col] != ref)
+        BoardMarks ref = board_[row][0];
+        for (size_t col = 1; col < boardSize_; ++col) {
+            if (board_[row][col] != ref)
                 equalRow = false;
         }
         if (equalRow) {
@@ -84,11 +91,11 @@ BoardState Board::evaluateBoard() const {
     }
 
     // Checks columns for a win for the current player.
-    for (int col = 0; col < this->boardSize; ++col) {
+    for (size_t col = 0; col < boardSize_; ++col) {
         bool equalCol = true;
-        BoardMarks ref = board[0][col];
-        for (int row = 1; row < this->boardSize; ++row) {
-            if (board[row][col] != ref)
+        BoardMarks ref = board_[0][col];
+        for (size_t row = 1; row < boardSize_; ++row) {
+            if (board_[row][col] != ref)
                 equalCol = false;
         }
         if (equalCol) {
@@ -101,9 +108,9 @@ BoardState Board::evaluateBoard() const {
 
     // Checks diagonals for a win for the current player.
     bool equalDiagonal = true;
-    BoardMarks ref = board[0][0];
-    for (int idx = 1; idx < this->boardSize; ++idx) {
-        if (board[idx][idx] != ref)
+    BoardMarks ref = board_[0][0];
+    for (size_t idx = 1; idx < boardSize_; ++idx) {
+        if (board_[idx][idx] != ref)
             equalDiagonal = false;
     }
     if (equalDiagonal) {
@@ -114,11 +121,11 @@ BoardState Board::evaluateBoard() const {
     }
 
     equalDiagonal = true;
-    ref = board[0][this->boardSize - 1];
-    for (int idx = 1; idx < this->boardSize; ++idx) {
+    ref = board_[0][boardSize_ - 1];
+    for (size_t idx = 1; idx < boardSize_; ++idx) {
         int row = idx;
-        int col = this->boardSize - idx - 1;
-        if (board[row][col] != ref)
+        int col = boardSize_ - idx - 1;
+        if (board_[row][col] != ref)
             equalDiagonal = false;
     }
     if (equalDiagonal) {
@@ -130,9 +137,9 @@ BoardState Board::evaluateBoard() const {
 
     // If there is an empty cell and no winner is determined, then the game is
     // still ongoing.
-    for (int row = 0; row < this->boardSize; ++row)
-        for (int col = 0; col < this->boardSize; ++col)
-            if (BoardMarks::Empty == board[row][col])
+    for (size_t row = 0; row < boardSize_; ++row)
+        for (size_t col = 0; col < boardSize_; ++col)
+            if (BoardMarks::Empty == board_[row][col])
                 return BoardState::NoWinner;
 
     // If no winner is determined and there are no empty cells, then the game is a
@@ -140,13 +147,17 @@ BoardState Board::evaluateBoard() const {
     return BoardState::Tie;
 }
 
-void Board::reset() {
+void Board::reset()
+{
     // Sets all the cells to empty.
-    for (int row = 0; row < this->boardSize; ++row) {
-        for (int col = 0; col < this->boardSize; ++col) {
-            board[row][col] = BoardMarks::Empty;
+    for (size_t row = 0; row < boardSize_; ++row) {
+        for (size_t col = 0; col < boardSize_; ++col) {
+            board_[row][col] = BoardMarks::Empty;
         }
     }
 }
 
-int Board::size() const { return this->boardSize; }
+size_t Board::size() const
+{
+    return boardSize_;
+}

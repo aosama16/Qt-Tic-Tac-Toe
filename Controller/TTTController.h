@@ -11,19 +11,20 @@
 using std::unique_ptr;
 using std::vector;
 
-class TTTController : public QObject {
+class TTTController : public QObject
+{
     Q_OBJECT
 protected:
     // View
-    TicTacToeGame view;
+    TicTacToeGame view_;
     // Model
-    Board board;
+    Board board_;
     // Cells built by the view
-    vector<Cell> cells;
+    vector<Cell> cells_;
     // Game Logic Variables
-    const TTTOptions& options;
-    BoardMarks currentPlayer;
-    unique_ptr<AIAgent> agent;
+    const TTTOptions& options_;
+    BoardMarks currentPlayer_;
+    unique_ptr<AIAgent> agent_;
 
 private: // Methods
     void setConnections();

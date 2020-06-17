@@ -11,7 +11,8 @@ namespace Ui {
 class TicTacToeGame;
 }
 
-class TicTacToeGame final : public QDialog {
+class TicTacToeGame final : public QDialog
+{
     Q_OBJECT
 
 public:

@@ -2,7 +2,8 @@
 #define AIAGENT_H
 
 class Board;
-class AIAgent {
+class AIAgent
+{
 public:
     AIAgent() {}
     virtual ~AIAgent() {}

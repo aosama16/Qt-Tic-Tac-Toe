@@ -1,14 +1,16 @@
 #ifndef TTTCOMMONTYPES_H
 #define TTTCOMMONTYPES_H
+#include <cstddef>
 
 class QPushButton;
 
-namespace defaults {
+namespace defaults
+{
 constexpr short INVALID_CELL = -1;
-constexpr short DEFAULT_BOARD_SIZE = 3;
-constexpr short DEFAULT_MINIMAX_DEPTH = 3;
-constexpr short GUI_CELL_ROW_SPAN = 1;
-constexpr short GUI_CELL_COLUMN_SPAN = 1;
+constexpr size_t DEFAULT_BOARD_SIZE = 3;
+constexpr unsigned short DEFAULT_MINIMAX_DEPTH = 3;
+constexpr unsigned short GUI_CELL_ROW_SPAN = 1;
+constexpr unsigned short GUI_CELL_COLUMN_SPAN = 1;
 constexpr char X_COLOR[] = "#455A64";
 constexpr char O_COLOR[] = "#FF5722";
 constexpr char DEFAULT_COLOR[] = "#FFF";
@@ -16,7 +18,8 @@ constexpr char DEFAULT_COLOR[] = "#FFF";
 /**
  * @brief The Cell struct
  */
-struct Cell {
+struct Cell
+{
     QPushButton *cellBtn = nullptr;
     int row = defaults::INVALID_CELL;
     int col = defaults::INVALID_CELL;
@@ -27,9 +30,10 @@ struct Cell {
 /**
  * @brief The TTTOptions struct
  */
-struct TTTOptions {
-    int boardSize = defaults::DEFAULT_BOARD_SIZE;
-    int miniMaxDepth = defaults::DEFAULT_MINIMAX_DEPTH;
+struct TTTOptions
+{
+    size_t boardSize = defaults::DEFAULT_BOARD_SIZE;
+    unsigned short miniMaxDepth = defaults::DEFAULT_MINIMAX_DEPTH;
     bool AIopponent = true;
     bool AIstarts = false;
 };
