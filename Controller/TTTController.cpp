@@ -14,10 +14,10 @@ TTTController::TTTController(const TTTOptions &options, QObject *parent)
     // Build GUI
     cells_ = view_.buildCellButtons(options.boardSize);
 
-    // Set Connections to the UI elements
+    // Set Connections to the UI elements.
     setConnections();
 
-    // specifies the type of agent, and it's behaviour throught polymorphism
+    // specifies the type of agent, and it's behaviour throught polymorphism.
     if (options_.AIopponent && options_.AIstarts)
         agent_ = std::make_unique<MiniMaxAgent>(options_.miniMaxDepth, BoardMarks::X, BoardMarks::O);
     else if (options_.AIopponent)
@@ -25,48 +25,49 @@ TTTController::TTTController(const TTTOptions &options, QObject *parent)
     else
         agent_ = std::make_unique<NoAgent>();
 
-    // Setup a new game
+    // Setup a new game.
     reset();
 }
 
 void TTTController::startGame()
 {
+    // Shows the gameplay GUI.
     view_.exec();
 }
 
 void TTTController::setConnections()
 {
-    // Cell connections
+    // Cell connections.
     for (Cell &cell : cells_)
         connect(cell.cellBtn, &QPushButton::clicked, [&] { updateGame(cell); });
 
-    // New Game Connection - resetting the game
+    // New Game Connection - resetting the game.
     connect(&view_, &TicTacToeGame::newGame, this, [&] { reset(); });
 
-    // Connect AI to play after a cell is chosen by human input
+    // Connect AI to play after a cell is chosen by human input.
     connect(this, &TTTController::turnFinished, [=] { AIAgentPlay(); });
 }
 
 void TTTController::updateGameState(Cell &cell)
 {
-
+    // Updates the cell view.
     this->view_.updateCell(cell, currentPlayer_);
 
 #ifdef QT_DEBUG
     board_.printBoard();
 #endif
-    // Update board state and declare state if its a final state
+    // Update board state and declare state if its a final state.
     BoardState boardState = board_.evaluateBoard();
     if (BoardState::NoWinner != boardState)
         view_.declareGameState(boardState);
 
-    // Switch the players
+    // Switch the players.
     switchPlayer();
 }
 
 void TTTController::reset()
 {
-    // Resets the current player back to X
+    // Resets the current player back to X.
     currentPlayer_ = BoardMarks::X;
     // Resets the View GUI elements.
     view_.reset(cells_);
@@ -74,7 +75,7 @@ void TTTController::reset()
     board_.reset();
     // Resets the AI agent.
     agent_.reset();
-    // Start AI play
+    // Start AI play.
     if (options_.AIstarts)
         AIAgentPlay();
 }
