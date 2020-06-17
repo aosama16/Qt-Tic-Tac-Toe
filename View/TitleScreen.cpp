@@ -46,11 +46,10 @@ void TitleScreen::updateTwoPlayers(bool checked)
 
 void TitleScreen::updateAIstartsGame(bool checked)
 {
-    if (checked) {
+    if (checked)
         options_.AIstarts = true;
-    } else {
+    else
         options_.AIstarts = false;
-    }
 }
 
 void TitleScreen::updateMiniMaxDepth(int depth)
