@@ -74,7 +74,8 @@ void TTTController::reset()
     // Resets the internal Representation of the board.
     board_.reset();
     // Resets the AI agent.
-    agent_.reset();
+    // Uses the arrow operator to avoid calling unique_pointer::reset()
+    agent_->reset();
     // Start AI play.
     if (options_.AIstarts)
         AIAgentPlay();
