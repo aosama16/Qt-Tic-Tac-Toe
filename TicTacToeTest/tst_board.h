@@ -471,10 +471,10 @@ TEST(BoardTest, setPlayerInputValid){
 
 TEST(BoardTest, setPlayerInputOutOfBounds){
     Board board(4);
-    EXPECT_EQ(false, board.setPlayerInput(0, 4, BoardMarks::X));
-    EXPECT_EQ(false, board.setPlayerInput(-1, 2, BoardMarks::X));
-    EXPECT_EQ(false, board.setPlayerInput(5, 2, BoardMarks::X));
-    EXPECT_EQ(false, board.setPlayerInput(-1, -1, BoardMarks::X));
+    EXPECT_ANY_THROW(board.setPlayerInput(0, 4, BoardMarks::X));
+    EXPECT_ANY_THROW(board.setPlayerInput(-1, 2, BoardMarks::X));
+    EXPECT_ANY_THROW(board.setPlayerInput(5, 2, BoardMarks::X));
+    EXPECT_ANY_THROW(board.setPlayerInput(-1, -1, BoardMarks::X));
 }
 
 TEST(BoardTest, setPlayerInputOverwrite){

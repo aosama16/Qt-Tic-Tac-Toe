@@ -20,7 +20,7 @@ public:
     virtual bool setPlayerInput(size_t row, size_t col, BoardMarks currentPlayer);
     virtual BoardMarks at(size_t row, size_t col) const;
     virtual void reset();
-    virtual bool resetCell(size_t row, size_t col);
+    virtual void resetCell(size_t row, size_t col);
     size_t size() const;
 #ifdef QT_DEBUG
     virtual void printBoard () const;

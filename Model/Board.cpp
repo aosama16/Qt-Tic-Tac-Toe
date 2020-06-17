@@ -3,6 +3,7 @@
 #ifdef QT_DEBUG
 #include <QDebug>
 #endif
+#include <stdexcept>
 
 Board::Board(size_t size)
     : board_(size, vector<BoardMarks>(size, BoardMarks::Empty)),
@@ -35,11 +36,11 @@ bool Board::setPlayerInput(size_t row, size_t col, BoardMarks currentPlayer)
 
     // Row input in not valid.
     if (row >= boardSize_)
-        return false;
+        throw std::out_of_range("Row index is out of range.");
 
     // Column input is not valid.
     if (col >= boardSize_)
-        return false;
+        throw std::out_of_range("Column index is out of range.");
 
     // Cell is not empty.
     if (BoardMarks::Empty != board_[row][col])
@@ -51,20 +52,18 @@ bool Board::setPlayerInput(size_t row, size_t col, BoardMarks currentPlayer)
     return true;
 }
 
-bool Board::resetCell(size_t row, size_t col)
+void Board::resetCell(size_t row, size_t col)
 {
     // Row input in not valid.
     if (row >= boardSize_)
-        return false;
+        throw std::out_of_range("Row index is out of range.");
 
     // Column input is not valid.
     if (col >= boardSize_)
-        return false;
+        throw std::out_of_range("Column index is out of range.");
 
     // Reset Cell
     board_[row][col] = BoardMarks::Empty;
-
-    return true;
 }
 
 BoardMarks Board::at(size_t row, size_t col) const
