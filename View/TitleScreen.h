@@ -7,6 +7,12 @@ namespace Ui {
 class TitleScreen;
 }
 
+/**
+ * @brief The TitleScreen class is responsible for the GUI of the title screen,
+ * its main functionality is to gather game options set by the user,
+ * then starting a game by creating a Tic Tac Toe controller with the user options.
+ */
+
 class TitleScreen final : public QMainWindow
 {
     Q_OBJECT

@@ -4,6 +4,17 @@
 #include "TTTCommonTypes.h"
 #include <qglobal.h>
 
+/**
+ * @brief The NoAgent class is an empty class that does not play,
+ * it specifies the null object behaviour,
+ * so it represents the lack of an AI agent,
+ * which is useful to avoid using if conditions in
+ * code when checking on the existence of an AI agent.
+ *
+ * This class has no CPP file as it does not have any
+ * implementation details.
+ */
+
 class NoAgent final : public AIAgent
 {
 public:

@@ -6,6 +6,13 @@
 
 using std::vector;
 
+/**
+ * @brief The Board class is responsible for representing
+ * the underlying model of the game, it is a 2D matrix representation
+ * of the GUI that is machine readable, and can be used when running
+ * any sort of algorithms on the board.
+ */
+
 class Board
 {
 
