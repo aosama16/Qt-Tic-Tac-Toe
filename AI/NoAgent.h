@@ -20,7 +20,11 @@ class NoAgent final : public AIAgent
 public:
     NoAgent() {}
     ~NoAgent() {}
-
+    /**
+     * @brief play does nothing to simulate a null agent behaviour.
+     * @param board: a reference to the board model.
+     * @return an invalid cell location to not trigger any kind of updates.
+     */
     int play(Board& board) override {
         Q_UNUSED(board);
         return defaults::INVALID_CELL;
