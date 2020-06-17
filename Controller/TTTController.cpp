@@ -72,6 +72,8 @@ void TTTController::reset()
     view_.reset(cells_);
     // Resets the internal Representation of the board.
     board_.reset();
+    // Resets the AI agent.
+    agent_.reset();
     // Start AI play
     if (options_.AIstarts)
         AIAgentPlay();
