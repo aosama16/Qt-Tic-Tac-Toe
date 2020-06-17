@@ -74,8 +74,9 @@ BoardMarks Board::at(size_t row, size_t col) const
 BoardState Board::evaluateBoard() const
 {
     // Checks rows for a win for the current player.
+    bool equalRow = true;
     for (size_t row = 0; row < boardSize_; ++row) {
-        bool equalRow = true;
+        equalRow = true;
         BoardMarks ref = board_[row][0];
         for (size_t col = 1; col < boardSize_; ++col) {
             if (board_[row][col] != ref)
@@ -90,8 +91,9 @@ BoardState Board::evaluateBoard() const
     }
 
     // Checks columns for a win for the current player.
+    bool equalCol = true;
     for (size_t col = 0; col < boardSize_; ++col) {
-        bool equalCol = true;
+        equalCol = true;
         BoardMarks ref = board_[0][col];
         for (size_t row = 1; row < boardSize_; ++row) {
             if (board_[row][col] != ref)
