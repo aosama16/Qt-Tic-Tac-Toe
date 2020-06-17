@@ -8,14 +8,14 @@ MiniMaxAgent::MiniMaxAgent(unsigned short depth, BoardMarks AImark, BoardMarks p
       AImark_(AImark),
       playerMark_(playerMark) {}
 
-int MiniMaxAgent::maxMove(Board &board, int depth, int alpha, int beta) const
+short MiniMaxAgent::maxMove(Board &board, unsigned short depth, short alpha, short beta) const
 {
     // if game over return score
     BoardState state = board.evaluateBoard();
     if ( (0 == depth) || (BoardState::NoWinner != state) )
         return score(state);
 
-    int bestScore = INT_MIN;
+    short bestScore = SHRT_MIN;
     for (size_t row = 0; row < board.size(); ++row) {
         for (size_t col = 0; col < board.size(); ++col) {
             if (BoardMarks::Empty == board.at(row, col)) {
@@ -23,7 +23,7 @@ int MiniMaxAgent::maxMove(Board &board, int depth, int alpha, int beta) const
                 board.setPlayerInput(row, col, AImark_);
 
                 // Compare result of this move with respect to AI
-                int score = minMove(board, depth - 1, alpha, beta);
+                short score = minMove(board, depth - 1, alpha, beta);
 
                 // Reset the move done
                 board.resetCell(row, col);
@@ -38,14 +38,14 @@ int MiniMaxAgent::maxMove(Board &board, int depth, int alpha, int beta) const
     return bestScore;
 }
 
-int MiniMaxAgent::minMove(Board &board, int depth, int alpha, int beta) const
+short MiniMaxAgent::minMove(Board &board, unsigned short depth, short alpha, short beta) const
 {
     // if game over return score
     BoardState state = board.evaluateBoard();
     if ( (0 == depth) || (BoardState::NoWinner != state) )
         return score(state);
 
-    int bestScore = INT_MAX;
+    short bestScore = SHRT_MAX;
     for (size_t row = 0; row < board.size(); ++row) {
         for (size_t col = 0; col < board.size(); ++col) {
             if (BoardMarks::Empty == board.at(row, col)) {
@@ -53,7 +53,7 @@ int MiniMaxAgent::minMove(Board &board, int depth, int alpha, int beta) const
                 board.setPlayerInput(row, col, playerMark_);
 
                 // Compare result of this move with respect to player
-                int score = maxMove(board, depth - 1, alpha, beta);
+                short score = maxMove(board, depth - 1, alpha, beta);
 
                 // Reset the move done
                 board.resetCell(row, col);
@@ -95,7 +95,7 @@ int MiniMaxAgent::play(Board &board)
                 // Try the move
                 board.setPlayerInput(row, col, AImark_);
 
-                int moveScore = minMove(board, depth_ - 1, INT_MIN, INT_MAX);
+                int moveScore = minMove(board, depth_ - 1, SHRT_MIN, SHRT_MAX);
                 if (moveScore > bestScore) {
                     bestScore = moveScore;
                     bestEntry.first = row;

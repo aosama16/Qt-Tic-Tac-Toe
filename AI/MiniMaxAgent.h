@@ -18,8 +18,8 @@ private:
     static constexpr short PLAYER_WIN_SCORE = -1;
     static constexpr short TIE_SCORE = 0;
 
-    int maxMove(Board &board, int depth, int alpha, int beta) const;
-    int minMove(Board &board, int depth, int alpha, int beta) const;
+    short maxMove(Board &board, unsigned short depth, short alpha, short beta) const;
+    short minMove(Board &board, unsigned short depth, short alpha, short beta) const;
     int score(const BoardState state) const;
 };
 
