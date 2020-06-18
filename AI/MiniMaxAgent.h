@@ -11,7 +11,7 @@
  * an AI turn then a Player turn until a final state is
  * reached, then it scores the final state by giving a
  * negative value if the Player wins and a positive value
- * if it wins, than backtracks picking the minimum score
+ * if it wins, then backtracks picking the minimum score
  * if it is the player turn and the max score if its
  * the AI turn.
  */

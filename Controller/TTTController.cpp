@@ -17,7 +17,7 @@ TTTController::TTTController(const TTTOptions &options, QObject *parent)
     // Set Connections to the UI elements.
     setConnections();
 
-    // specifies the type of agent, and it's behaviour throught polymorphism.
+    // Specifies the type of agent, and its behaviour throught polymorphism.
     if (options_.AIopponent && options_.AIstarts)
         agent_ = std::make_unique<MiniMaxAgent>(options_.miniMaxDepth, BoardMarks::X, BoardMarks::O);
     else if (options_.AIopponent)

@@ -12,7 +12,7 @@ using std::unique_ptr;
 using std::vector;
 
 /**
- * @brief The TTTController classis the controller for a Tic Tac Toe game,
+ * @brief The TTTController class is the controller for a Tic Tac Toe game,
  * it takes in game options as input, and controls the view (TicTacToeGame)
  * and the model (Board) according to the game logic specified in this class,
  * it is also responsible for calling the AI agent to play its turn if specified

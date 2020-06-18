@@ -34,7 +34,7 @@ bool Board::setPlayerInput(size_t row, size_t col, BoardMarks currentPlayer)
     if (BoardState::NoWinner != evaluateBoard())
         return false;
 
-    // Row input in not valid.
+    // Row input is not valid.
     if (row >= boardSize_)
         throw std::out_of_range("Row index is out of range.");
 
@@ -54,7 +54,7 @@ bool Board::setPlayerInput(size_t row, size_t col, BoardMarks currentPlayer)
 
 void Board::resetCell(size_t row, size_t col)
 {
-    // Row input in not valid.
+    // Row input is not valid.
     if (row >= boardSize_)
         throw std::out_of_range("Row index is out of range.");
 

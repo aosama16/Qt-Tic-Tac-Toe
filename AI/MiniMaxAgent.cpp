@@ -123,6 +123,6 @@ int MiniMaxAgent::play(Board &board)
 
     // Set the AI choice on the board.
     board.setPlayerInput(bestEntry.first, bestEntry.second, AImark_);
-    // Return the 1D index of the cell to delegate any othe updates needed.
+    // Return the 1D index of the cell to delegate any other updates needed.
     return bestEntry.first * board.size() + bestEntry.second;
 }
