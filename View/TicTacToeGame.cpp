@@ -6,6 +6,8 @@
 TicTacToeGame::TicTacToeGame(QWidget *parent)
     : QDialog(parent), ui(new Ui::TicTacToeGame)
 {
+    // remove question mark from the title bar
+    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     ui->setupUi(this);
     setConnections();
 }
