@@ -23,7 +23,7 @@ public:
      * @param parent is a QWidget type parent that owns this instance of the controller.
      */
     explicit TitleScreen(QWidget *parent = nullptr);
-    ~TitleScreen();
+    ~TitleScreen() override;
 
 private:
     /**

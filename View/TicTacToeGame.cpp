@@ -24,16 +24,20 @@ void TicTacToeGame::setConnections()
     connect(ui->back, &QPushButton::clicked, [=] { close(); });
 }
 
-vector<Cell> TicTacToeGame::buildCellButtons(int boardSize)
+vector<Cell> TicTacToeGame::buildCellButtons(size_t boardSize)
 {
     vector<Cell> cells;
     cells.reserve(boardSize * boardSize);
-    for (int row = 0; row < boardSize; ++row) {
-        for (int col = 0; col < boardSize; ++col) {
+    for (size_t row = 0; row < boardSize; ++row) {
+        for (size_t col = 0; col < boardSize; ++col) {
             // Add buttons to gridLayout
             QPushButton *btn = new QPushButton();
             btn->setProperty("cell", true);
-            ui->gridBoard->addWidget(btn, row, col, defaults::GUI_CELL_ROW_SPAN, defaults::GUI_CELL_COLUMN_SPAN);
+            ui->gridBoard->addWidget(btn,
+                                     static_cast<int>(row),
+                                     static_cast<int>(col),
+                                     defaults::GUI_CELL_ROW_SPAN,
+                                     defaults::GUI_CELL_COLUMN_SPAN);
             // Reference to cells
             cells.emplace_back(btn, row, col);
         }

@@ -23,7 +23,7 @@ void TitleScreen::setConnections()
 void TitleScreen::updateBoardSize(int size)
 {
     ui->boardSizeValue->setText(QString::number(size));
-    options_.boardSize = size;
+    options_.boardSize = static_cast<size_t>(size);
 }
 
 void TitleScreen::updateSinglePlayer(bool checked)

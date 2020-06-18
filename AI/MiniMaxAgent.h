@@ -85,7 +85,7 @@ private:
      * @param state is an input paramater that specifies the state of the game.
      * @return a score based on the state of the game.
      */
-    int score(const BoardState state) const;
+    short score(const BoardState state) const;
 };
 
 #endif // MINIMAXAGENT_H

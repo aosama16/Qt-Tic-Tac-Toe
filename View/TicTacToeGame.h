@@ -47,7 +47,7 @@ public:
      * @return a collection of cells containing push button references
      * and their corresponding row and column.
      */
-    vector<Cell> buildCellButtons(int boardSize);
+    vector<Cell> buildCellButtons(size_t boardSize);
     /**
      * @brief reset clears out the text of all push button cells.
      * @param cells: a collection of cells containing push button references

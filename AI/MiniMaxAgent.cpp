@@ -75,7 +75,7 @@ short MiniMaxAgent::minMove(Board &board, unsigned short depth, short alpha, sho
     return bestScore;
 }
 
-int MiniMaxAgent::score(const BoardState state) const
+short MiniMaxAgent::score(const BoardState state) const
 {
     // AI win score.
     if ( (BoardMarks::O == AImark_) && (BoardState::OWins == state) )
@@ -124,5 +124,5 @@ int MiniMaxAgent::play(Board &board)
     // Set the AI choice on the board.
     board.setPlayerInput(bestEntry.first, bestEntry.second, AImark_);
     // Return the 1D index of the cell to delegate any other updates needed.
-    return bestEntry.first * board.size() + bestEntry.second;
+    return static_cast<int>(bestEntry.first * board.size() + bestEntry.second);
 }

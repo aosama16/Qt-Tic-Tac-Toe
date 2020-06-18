@@ -19,7 +19,7 @@ class NoAgent final : public AIAgent
 {
 public:
     NoAgent() {}
-    ~NoAgent() {}
+    ~NoAgent() override {}
     /**
      * @brief play does nothing to simulate a null agent behaviour.
      * @param board: a reference to the board model.

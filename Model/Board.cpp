@@ -124,8 +124,8 @@ BoardState Board::evaluateBoard() const
     equalDiagonal = true;
     ref = board_[0][boardSize_ - 1];
     for (size_t idx = 1; idx < boardSize_; ++idx) {
-        int row = idx;
-        int col = boardSize_ - idx - 1;
+        size_t row = idx;
+        size_t col = boardSize_ - idx - 1;
         if (board_[row][col] != ref)
             equalDiagonal = false;
     }

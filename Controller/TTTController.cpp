@@ -85,7 +85,7 @@ void TTTController::AIAgentPlay()
 {
     int cellIdx = agent_->play(board_);
     if (defaults::INVALID_CELL != cellIdx)
-        updateGameState(cells_.at(cellIdx));
+        updateGameState(cells_.at(static_cast<size_t>(cellIdx)));
 }
 
 void TTTController::switchPlayer()
@@ -98,7 +98,9 @@ void TTTController::switchPlayer()
 
 void TTTController::updateGame(Cell &cell)
 {
-    bool success = board_.setPlayerInput(cell.row, cell.col, currentPlayer_);
+    bool success = board_.setPlayerInput(static_cast<size_t>(cell.row),
+                                         static_cast<size_t>(cell.col),
+                                         currentPlayer_);
     if (success) {
         updateGameState(cell);
         emit turnFinished();
