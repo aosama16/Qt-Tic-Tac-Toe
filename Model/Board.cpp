@@ -9,6 +9,26 @@ Board::Board(size_t size)
     : board_(size, vector<BoardMarks>(size, BoardMarks::Empty)),
       boardSize_(size) {}
 
+Board::Board(Board &b)
+    : board_(b.board_),boardSize_(b.boardSize_)
+{
+
+}
+
+Board::Board(Board &&b)
+    : board_(std::move(b.board_)),
+      boardSize_(std::move(b.boardSize_))
+{
+
+}
+
+Board &Board::operator=(Board b)
+{
+    std::swap(board_, b.board_);
+    std::swap(boardSize_, b.boardSize_);
+    return *this;
+}
+
 Board::~Board()
 {
 

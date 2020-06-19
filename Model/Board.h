@@ -26,7 +26,7 @@ protected: // Data
      * @brief boardSize is the number of rows or columns in the board.
      * a 3x3 board has a boardSize of 3.
      */
-    const size_t boardSize_;
+    size_t boardSize_;
 
 public:
     /**
@@ -34,6 +34,26 @@ public:
      * @param size is the number of rows or columns in the board.
      */
     Board(size_t size);
+    /**
+     * @brief Board copy constructor.
+     * @param b: The board to be copied.
+     */
+    Board(Board& b);
+    /**
+     * @brief Board move constructor.
+     * @param b: The board to be moved.
+     */
+    Board(Board&& b);
+    /**
+     * @brief This assignment operator implements the copy & swap idiom,
+     * so it works as a move and a copy assignment operator.
+     * @param b: The board to be copied or moved.
+     * @return a reference to this object, so this operator can be chained.
+     */
+    Board& operator=(Board b);
+    /**
+     * @brief Board destructor
+     */
     virtual ~Board();
     /**
      * @brief evaluateBoard evaluates whether the state of the current board.
