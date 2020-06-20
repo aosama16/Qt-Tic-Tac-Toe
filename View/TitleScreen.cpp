@@ -1,6 +1,5 @@
 #include "TitleScreen.h"
 #include "TTTController.h"
-#include "ui_titlescreen.h"
 
 TitleScreen::TitleScreen(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::TitleScreen)
@@ -64,11 +63,6 @@ void TitleScreen::startGame()
     TTTController ttt(options_);
     ttt.startGame();
     this->show();
-}
-
-TitleScreen::~TitleScreen()
-{
-    delete ui;
 }
 
 void TitleScreen::closeEvent(QCloseEvent *event)

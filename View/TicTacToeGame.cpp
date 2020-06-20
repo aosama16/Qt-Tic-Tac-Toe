@@ -1,5 +1,4 @@
 #include "TicTacToeGame.h"
-#include "ui_TicTacToeGame.h"
 #include <QMessageBox>
 #include <QPushButton>
 
@@ -10,11 +9,6 @@ TicTacToeGame::TicTacToeGame(QWidget *parent)
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     ui->setupUi(this);
     setConnections();
-}
-
-TicTacToeGame::~TicTacToeGame()
-{
-    delete ui;
 }
 
 void TicTacToeGame::setConnections()

@@ -2,14 +2,13 @@
 #define MAINWINDOW_H
 
 #include "TTTCommonTypes.h"
+#include "ui_TicTacToeGame.h"
 #include <QDialog>
 #include <vector>
+#include <memory>
 
 using std::vector;
 
-namespace Ui {
-class TicTacToeGame;
-}
 
 /**
  * @brief The TicTacToeGame class is responsible for the GUI of a game,
@@ -29,7 +28,6 @@ public:
      * @param parent is a QWidget type parent that owns this instance of the controller.
      */
     explicit TicTacToeGame(QWidget *parent = nullptr);
-    ~TicTacToeGame();
     /**
      * @brief updateCell sets the Text of the cell to the current player's mark.
      * @param cell: a refernece to the clicked cell.
@@ -59,7 +57,7 @@ private:
     /**
      * @brief ui is a reference to the ui object of the tic tac toe game.
      */
-    Ui::TicTacToeGame *ui;
+    std::unique_ptr<Ui::TicTacToeGame> ui;
     /**
      * @brief setConnections handles setting the connection to emit if cells have cliked,
      * and the navigational back button.

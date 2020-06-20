@@ -1,11 +1,9 @@
 #ifndef TITLESCREEN_H
 #define TITLESCREEN_H
 #include "TTTCommonTypes.h"
+#include "ui_titlescreen.h"
 #include <QMainWindow>
-
-namespace Ui {
-class TitleScreen;
-}
+#include <memory>
 
 /**
  * @brief The TitleScreen class is responsible for the GUI of the title screen,
@@ -23,13 +21,12 @@ public:
      * @param parent is a QWidget type parent that owns this instance of the controller.
      */
     explicit TitleScreen(QWidget *parent = nullptr);
-    ~TitleScreen() override;
 
 private:
     /**
      * @brief ui is a reference to the ui object of the tic tac toe game.
      */
-    Ui::TitleScreen *ui;
+    std::unique_ptr<Ui::TitleScreen> ui;
     /**
      * @brief setConnections sets connections to gather game options from the GUI elements.
      */
